@@ -1,4 +1,4 @@
-package com.dsa2025.learn.array;
+package com.dsa2025.learn.array.two_pointer;
 
 // https://workat.tech/problem-solving/practice/unique-elements-sorted-array
 public class UniqueElementsInSortedArray {

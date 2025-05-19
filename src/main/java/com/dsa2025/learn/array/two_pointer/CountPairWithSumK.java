@@ -1,4 +1,4 @@
-package com.dsa2025.learn.array;
+package com.dsa2025.learn.array.two_pointer;
 
 // https://www.geeksforgeeks.org/count-pairs-with-given-sum-in-sorted-array/#expected-approach-using-two-pointer-technique-onlogn-and-on-space
 

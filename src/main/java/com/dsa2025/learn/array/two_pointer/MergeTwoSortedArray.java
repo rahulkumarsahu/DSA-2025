@@ -1,4 +1,4 @@
-package com.dsa2025.learn.array;
+package com.dsa2025.learn.array.two_pointer;
 
 import java.util.ArrayList;
 import java.util.List;
