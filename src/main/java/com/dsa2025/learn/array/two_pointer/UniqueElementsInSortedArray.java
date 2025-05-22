@@ -4,7 +4,7 @@ package com.dsa2025.learn.array.two_pointer;
 public class UniqueElementsInSortedArray {
 
     public static void main(String[] args) {
-        int[] arr = new int[]{1, 2, 3, 4, 5};
+        int[] arr = new int[]{1, 1, 1, 1, 1};
         int output = removeDuplicates(arr);
         System.out.println(output);
     }
@@ -16,7 +16,8 @@ public class UniqueElementsInSortedArray {
         int right = arr.length - 1;
 
         while (left < right) {
-
+            // if left and right is in same place than it will make count -- that is why never i and j
+            // should be in same position...
             while(left != right && arr[left] == arr[left + 1]) {
                 left++;
                 count--;
