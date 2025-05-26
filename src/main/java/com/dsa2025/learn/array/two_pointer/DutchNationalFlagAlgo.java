@@ -18,7 +18,7 @@ public class DutchNationalFlagAlgo {
         int high = arr.length - 1;
 
         // here we are considering like in between low and mid is sorted 0,1
-        // and mid to high is unsorted so when mid cross high we will break.
+        // and mid to high is unsorted, so when mid-cross high we will break.
         while (mid <= high) {
             if (arr[mid] == 0) {
                 swap(arr, low, mid);
