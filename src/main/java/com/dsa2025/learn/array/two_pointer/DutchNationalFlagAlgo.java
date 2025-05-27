@@ -37,7 +37,7 @@ public class DutchNationalFlagAlgo {
                 // mid should point to 1 according to algo.....
                 mid++;
             } else {
-                // 
+                //
                 swap(arr, mid, high);
                 high--;
             }
