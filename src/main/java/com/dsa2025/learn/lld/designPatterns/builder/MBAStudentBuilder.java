@@ -3,6 +3,7 @@ package com.dsa2025.learn.lld.designPatterns.builder;
 import java.util.ArrayList;
 import java.util.List;
 
+// child have all access to parent
 public class MBAStudentBuilder extends StudentBuilder{
 
     @Override
