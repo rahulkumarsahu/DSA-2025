@@ -58,7 +58,7 @@ Coffee coffee = new Coffee.Builder()
 System.out.println(coffee.getDescription()); // Plain Coffee + Milk + Sugar
 ☕ When to Use Decorator Pattern for Coffee
 Intent:
-You have a core object (coffee) and you want to dynamically layer on features or behaviors — even at runtime.
+You have a core object (coffee), and you want to dynamically layer on features or behaviors — even at runtime.
 
 Characteristics:
 Focuses on runtime behavior enhancement.
@@ -78,31 +78,16 @@ if (wantSugar) {
 This allows changing behavior based on runtime conditions, which Builder cannot do.
 
 🆚 Key Differences in Coffee Context
-Aspect	Builder Pattern	Decorator Pattern
-Focus	Building a complete coffee object	Adding new behavior/responsibility
-Customization	Compile-time (defined before build)	Runtime (can wrap/unwrap at runtime)
-Result	A concrete object with set fields	A chain of objects wrapping each other
-Flexibility	Less flexible after object is built	Highly flexible and extendable
-Use case analogy	Customer orders and you make it to spec	You take basic coffee and add toppings live
+Aspect	                 Builder Pattern	                      Decorator Pattern
+Focus	        Building a complete coffee object	          Adding new behavior/responsibility
+Customization	Compile-time (defined before build)	          Runtime (can wrap/unwrap at runtime)
 
 🎯 Which to Use?
 Use This	If You Want To...
-Builder	Build an object with many fixed options before it's used.
+Builder	 Builds an object with many fixed options before it's used.
 Decorator	Add or change behavior at runtime in a flexible way.
 
-Let me know if you want to see this in Go or Python too.
-
-
-
-
-
-
-You said:
-similarly explain for adapter and facade with example
-
-
-ChatGPT said:
-Great! Let’s break down the difference between the Adapter and Facade patterns with clear explanations and real-world Java examples.
+------------------------------------------------------------------------------------------------------
 
 🔌 Adapter Pattern — "Make it Compatible"
 📌 Intent:
@@ -116,7 +101,7 @@ You want to reuse old code without modifying it.
 You need to make two things work together.
 
 ☕ Real-World Analogy:
-You have a 2-pin charger but the wall socket accepts 3-pin plugs. So you use an adapter.
+You have a 2-pin charger, but the wall socket accepts 3-pin plugs. So you use an adapter.
 
 🔧 Example:
 Let’s say you have an old printer API that your new system can't directly use:
@@ -196,14 +181,27 @@ Usage:
 ComputerFacade computer = new ComputerFacade();
 computer.startComputer();
 🔍 Adapter vs Facade – Summary
-Feature	Adapter	Facade
-Purpose	Make incompatible interfaces work together	Simplify usage of a complex system
-Focus	Interface compatibility	User-friendly interface
-Changes existing code?	No – just wraps	No – just simplifies
-Real-world example	Charger adapter	TV remote control
-Inheritance/Composition	Often uses composition	Often uses composition
+Feature	                      Adapter	                        Facade
+Purpose	Make incompatible interfaces work together	       Simplify usage of a complex system
+Focus	Interface compatibility	                           User-friendly interface
+Changes existing code?	No – just wraps	                   No – just simplifies
+Real-world example	Charger adapter	                        TV remote control
 
 🧠 Final Thought:
 Adapter: “I have something old, and I need to make it look like something new.”
 
 Facade: “I have something complex, and I want to hide all the inner workings.”
+
+--------------------------------------------------------------------------------------
+✅ Proxy Pattern
+A Proxy acts as a substitute for another object to control access to it.
+It is used for security, lazy loading, logging, or caching.
+It provides the same interface as the original object.
+For a single object.
+
+✅ Facade Pattern
+A Facade provides a simple interface to a group of complex subsystems.
+It is used to hide complexity and make systems easier to use.
+It does not replace the subsystems — it just simplifies their usage.
+
+--------------------------------------------------------------------------------------
