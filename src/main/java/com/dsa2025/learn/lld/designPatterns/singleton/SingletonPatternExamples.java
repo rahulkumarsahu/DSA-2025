@@ -122,4 +122,8 @@ public class SingletonPatternExamples {
  * Another thread sees incomplete object	Another thread sees fully built object
  * Risk of hard-to-find bugs	Safe multithreading behavior
  *
+ *
+ * Basically, kya hota hai thread 1 ad thread 2 jab parallel run karte hai to jvm 1.5 ke baad reorder
+ * hota hai 2,3 step reorder ho jata hai to thread 2 ko object mil jaayega but value nahi milega...
+ *
  */
