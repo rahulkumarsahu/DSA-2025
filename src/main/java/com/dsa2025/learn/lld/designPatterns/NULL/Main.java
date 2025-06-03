@@ -3,7 +3,7 @@ package com.dsa2025.learn.lld.designPatterns.NULL;
 public class Main {
 
     public static void main(String[] args) {
-        Vehicle vehicle = VehicleFactory.getVehicleObject("Bike");
+        Vehicle vehicle = VehicleFactory.getVehicleObject("Car");
         printVehicleDetails(vehicle);
     }
 
