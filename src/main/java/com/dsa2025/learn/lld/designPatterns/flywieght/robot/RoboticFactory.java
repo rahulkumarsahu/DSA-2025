@@ -1,4 +1,4 @@
-package com.dsa2025.learn.lld.designPatterns.flywieght;
+package com.dsa2025.learn.lld.designPatterns.flywieght.robot;
 
 import java.util.HashMap;
 import java.util.Map;

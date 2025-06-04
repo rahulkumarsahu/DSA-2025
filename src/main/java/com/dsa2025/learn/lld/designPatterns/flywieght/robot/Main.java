@@ -1,4 +1,4 @@
-package com.dsa2025.learn.lld.designPatterns.flywieght;
+package com.dsa2025.learn.lld.designPatterns.flywieght.robot;
 
 public class Main {
 
