@@ -10,7 +10,9 @@ public class Main {
             Total = 58 characters
             t = 7 times
             h = 3 times
-            a = 3 times and so on...
+            a = 3 times and so on..
+
+            all are same only diff in their position.
 
          */
 
