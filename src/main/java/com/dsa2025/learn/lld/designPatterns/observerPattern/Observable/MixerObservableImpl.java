@@ -5,8 +5,7 @@ import com.dsa2025.learn.lld.designPatterns.observerPattern.Observer.Notificatio
 import java.util.ArrayList;
 import java.util.List;
 
-// similar many products can observe this like mixer also can be one observable....
-public class IphoneObservableImpl implements StockObservable {
+public class MixerObservableImpl implements StockObservable {
 
     public List<NotificationAlertObserver> observerList = new ArrayList<>();
     public int stockCount = 0;
@@ -31,20 +30,20 @@ public class IphoneObservableImpl implements StockObservable {
     // when we will get update then we have to notify...
     @Override
     public void setStockCount(int newStockAdded) {
-            if (stockCount == 0) {
-                // new count is going to come notify subscriber and update the count...
-                notifySubscriber();
-            }
+        if (stockCount == 0) {
+            // new count is going to come notify subscriber and update the count...
+            notifySubscriber();
+        }
         stockCount = stockCount + newStockAdded;
     }
 
     @Override
     public int getStockCount() {
-         return stockCount;
+        return stockCount;
     }
 
     @Override
     public String getName() {
-        return "Iphone";
+        return "Mixer";
     }
 }

@@ -13,4 +13,6 @@ public interface StockObservable {
     void setStockCount(int newStockAdded);
 
     int getStockCount();
+
+    String getName();
 }
