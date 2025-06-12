@@ -9,6 +9,7 @@ public class TurnACOnCommand implements ICommand {
 
     @Override
     public void execute() {
+        // here 1 or 10 steps can be possible to turn on AC if any things get change sender or receiver will not change
         ac.turnOnAC();
     }
 

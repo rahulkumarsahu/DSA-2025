@@ -1,6 +1,6 @@
 package com.dsa2025.learn.lld.designPatterns.command;
 
-//Sender
+//Sender :- doesnot worry about how to start tha AC just in press button it says command.execute()
 public class MyRemoteControl {
 
     private ICommand command;
