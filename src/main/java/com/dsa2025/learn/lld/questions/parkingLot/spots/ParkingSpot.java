@@ -66,4 +66,5 @@ public abstract class ParkingSpot {
     public ParkingStrategyType getParkingStrategyType() {
         return parkingStrategyType;
     }
+     
 }
