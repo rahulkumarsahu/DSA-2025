@@ -3,7 +3,6 @@ package com.dsa2025.learn.lld.questions.parkingLot.spots;
 import com.dsa2025.learn.lld.questions.parkingLot.constant.ParkingStrategyType;
 import com.dsa2025.learn.lld.questions.parkingLot.constant.SpotSize;
 import com.dsa2025.learn.lld.questions.parkingLot.dto.Vehicle;
-import lombok.Data;
 
 import java.util.Optional;
 
@@ -66,5 +65,5 @@ public abstract class ParkingSpot {
     public ParkingStrategyType getParkingStrategyType() {
         return parkingStrategyType;
     }
-     
+
 }
