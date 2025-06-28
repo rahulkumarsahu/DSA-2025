@@ -9,9 +9,11 @@ public class Main {
         movieDirectory.add(border);
 
        Directory comedyMovieDirectory = new Directory("ComedyMovie");
-       File hulchul = new File("Hulchul");
-        comedyMovieDirectory.add(hulchul);
-        movieDirectory.add(comedyMovieDirectory);
+       File hulChul = new File("Hulchul");
+       comedyMovieDirectory.add(hulChul);
+       File heraPheri = new File("Hera Pheri");
+       comedyMovieDirectory.add(heraPheri);
+       movieDirectory.add(comedyMovieDirectory);
 
         movieDirectory.ls();
 

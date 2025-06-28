@@ -1,0 +1,1060 @@
+// Main class demonstrating the parking lot system
+package com.dsa2025.learn.lld.questions.parkingLot;
+
+import com.dsa2025.learn.lld.questions.parkingLot.constant.PricingStrategyEnum;
+import com.dsa2025.learn.lld.questions.parkingLot.constant.VehicleType;
+import com.dsa2025.learn.lld.questions.parkingLot.constant.PaymentMode;
+import com.dsa2025.learn.lld.questions.parkingLot.dto.Ticket;
+import com.dsa2025.learn.lld.questions.parkingLot.dto.Vehicle;
+import com.dsa2025.learn.lld.questions.parkingLot.entrance.EntranceGate;
+import com.dsa2025.learn.lld.questions.parkingLot.exit.ExitGate;
+import com.dsa2025.learn.lld.questions.parkingLot.spots.ParkingSpot;
+import com.dsa2025.learn.lld.questions.parkingLot.spots.ParkingSpotManager;
+import com.dsa2025.learn.lld.questions.parkingLot.factory.ParkingLotFactory;
+
+import java.util.Optional;
+import java.util.Scanner;
+
+public class ParkingLotMain {
+
+    private static final Scanner scanner = new Scanner(System.in);
+    private static ParkingLotSystem parkingLotSystem;
+
+    public static void main(String[] args) {
+        System.out.println("=== Welcome to Smart Parking Lot System ===");
+
+        // Initialize the parking lot system
+        initializeParkingLot();
+
+        boolean running = true;
+        while (running) {
+            displayMenu();
+            int choice = getUserChoice();
+
+            switch (choice) {
+                case 1:
+                    handleVehicleEntry();
+                    break;
+                case 2:
+                    handleVehicleExit();
+                    break;
+                case 3:
+                    displayParkingStatus();
+                    break;
+                case 4:
+                    running = false;
+                    System.out.println("Thank you for using our parking system!");
+                    break;
+                default:
+                    System.out.println("Invalid choice. Please try again.");
+            }
+        }
+        scanner.close();
+    }
+
+    private static void initializeParkingLot() {
+        // Using Factory pattern to create parking lot
+        parkingLotSystem = ParkingLotFactory.createParkingLot("MULTI_LEVEL", 3);
+        System.out.println("Parking lot initialized successfully!");
+    }
+
+    private static void displayMenu() {
+        System.out.println("\n=== Parking Lot Menu ===");
+        System.out.println("1. Park Vehicle");
+        System.out.println("2. Exit Vehicle");
+        System.out.println("3. Check Parking Status");
+        System.out.println("4. Exit System");
+        System.out.print("Enter your choice: ");
+    }
+
+    private static int getUserChoice() {
+        try {
+            return Integer.parseInt(scanner.nextLine());
+        } catch (NumberFormatException e) {
+            return -1;
+        }
+    }
+
+    private static void handleVehicleEntry() {
+        System.out.println("\n=== Vehicle Entry ===");
+
+        // Get vehicle details
+        System.out.print("Enter vehicle number: ");
+        String vehicleNo = scanner.nextLine();
+
+        System.out.println("Select vehicle type:");
+        System.out.println("1. CAR");
+        System.out.println("2. BIKE");
+        System.out.println("3. TRUCK");
+        System.out.print("Enter choice: ");
+
+        VehicleType vehicleType = getVehicleType(getUserChoice());
+        if (vehicleType == null) {
+            System.out.println("Invalid vehicle type!");
+            return;
+        }
+
+        // Create vehicle
+        Vehicle vehicle = new Vehicle(vehicleNo, vehicleType);
+
+        // Select pricing strategy
+        System.out.println("Select pricing strategy:");
+        System.out.println("1. HOURLY");
+        System.out.println("2. DAILY");
+        System.out.println("3. FLAT_RATE");
+        System.out.print("Enter choice: ");
+
+        PricingStrategyEnum pricingStrategy = getPricingStrategy(getUserChoice());
+        if (pricingStrategy == null) {
+            System.out.println("Invalid pricing strategy!");
+            return;
+        }
+
+        // Generate ticket
+        Optional<Ticket> ticket = parkingLotSystem.enterVehicle(vehicle, pricingStrategy);
+
+        if (ticket.isPresent()) {
+            System.out.println("Vehicle parked successfully!");
+            System.out.println("Ticket ID: " + ticket.get().getTicketId());
+            System.out.println("Spot ID: " + ticket.get().getParkingSpot().getSpotId());
+            System.out.println("Entry Time: " + ticket.get().getEntryTime());
+        } else {
+            System.out.println("Sorry, no parking spot available for your vehicle type!");
+        }
+    }
+
+    private static void handleVehicleExit() {
+        System.out.println("\n=== Vehicle Exit ===");
+
+        System.out.print("Enter vehicle number: ");
+        String vehicleNo = scanner.nextLine();
+
+        System.out.print("Enter ticket ID: ");
+        String ticketId = scanner.nextLine();
+
+        System.out.println("Select payment mode:");
+        System.out.println("1. CASH");
+        System.out.println("2. CARD");
+        System.out.println("3. UPI");
+        System.out.print("Enter choice: ");
+
+        String paymentMode = getPaymentMode(getUserChoice());
+        if (paymentMode == null) {
+            System.out.println("Invalid payment mode!");
+            return;
+        }
+
+        boolean success = parkingLotSystem.exitVehicle(vehicleNo, ticketId, paymentMode);
+
+        if (success) {
+            System.out.println("Vehicle exited successfully!");
+        } else {
+            System.out.println("Failed to exit vehicle. Please check ticket ID and vehicle number.");
+        }
+    }
+
+    private static void displayParkingStatus() {
+        System.out.println("\n=== Parking Status ===");
+        parkingLotSystem.displayStatus();
+    }
+
+    private static VehicleType getVehicleType(int choice) {
+        return switch (choice) {
+            case 1 -> VehicleType.CAR;
+            case 2 -> VehicleType.BIKE;
+            case 3 -> VehicleType.TRUCK;
+            default -> null;
+        };
+    }
+
+    private static PricingStrategyEnum getPricingStrategy(int choice) {
+        return switch (choice) {
+            case 1 -> PricingStrategyEnum.HOURLY;
+            case 2 -> PricingStrategyEnum.DAILY;
+            case 3 -> PricingStrategyEnum.FLAT_RATE;
+            default -> null;
+        };
+    }
+
+    private static String getPaymentMode(int choice) {
+        return switch (choice) {
+            case 1 -> "CASH";
+            case 2 -> "CARD";
+            case 3 -> "UPI";
+            default -> null;
+        };
+    }
+}
+
+// Enhanced ParkingLotSystem class following Facade pattern
+package com.dsa2025.learn.lld.questions.parkingLot;
+
+import com.dsa2025.learn.lld.questions.parkingLot.constant.PricingStrategyEnum;
+import com.dsa2025.learn.lld.questions.parkingLot.dto.Ticket;
+import com.dsa2025.learn.lld.questions.parkingLot.dto.Vehicle;
+import com.dsa2025.learn.lld.questions.parkingLot.entrance.EntranceGate;
+import com.dsa2025.learn.lld.questions.parkingLot.exit.ExitGate;
+import com.dsa2025.learn.lld.questions.parkingLot.spots.ParkingSpotManager;
+import lombok.Data;
+
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Optional;
+
+@Data
+public class ParkingLotSystem {
+
+    private final Map<String, EntranceGate> entranceGates;
+    private final Map<String, ExitGate> exitGates;
+    private final Map<String, Ticket> activeTickets; // ticketId -> Ticket
+    private final ParkingSpotManager parkingSpotManager;
+
+    public ParkingLotSystem(ParkingSpotManager parkingSpotManager,
+                           Map<String, EntranceGate> entranceGates,
+                           Map<String, ExitGate> exitGates) {
+        this.parkingSpotManager = parkingSpotManager;
+        this.entranceGates = entranceGates;
+        this.exitGates = exitGates;
+        this.activeTickets = new HashMap<>();
+    }
+
+    public Optional<Ticket> enterVehicle(Vehicle vehicle, PricingStrategyEnum pricingStrategy) {
+        // Using first available entrance gate (can be enhanced with load balancing)
+        EntranceGate entranceGate = entranceGates.values().iterator().next();
+
+        Optional<Ticket> ticket = entranceGate.generateTicket(vehicle, pricingStrategy);
+
+        if (ticket.isPresent()) {
+            activeTickets.put(ticket.get().getTicketId(), ticket.get());
+        }
+
+        return ticket;
+    }
+
+    public boolean exitVehicle(String vehicleNo, String ticketId, String paymentMode) {
+        if (!activeTickets.containsKey(ticketId)) {
+            System.out.println("Invalid ticket ID!");
+            return false;
+        }
+
+        Ticket ticket = activeTickets.get(ticketId);
+
+        // Verify vehicle number matches
+        if (!ticket.getVehicle().vehicleNo().equals(vehicleNo)) {
+            System.out.println("Vehicle number doesn't match ticket!");
+            return false;
+        }
+
+        // Using first available exit gate
+        ExitGate exitGate = exitGates.values().iterator().next();
+
+        // Calculate and display price
+        int price = exitGate.calculatePrice(ticket);
+        System.out.println("Parking fee: ₹" + price);
+
+        // Process payment
+        boolean paymentSuccess = exitGate.makePayment(ticket, paymentMode);
+
+        if (paymentSuccess) {
+            // Remove vehicle from parking spot
+            boolean vehicleRemoved = exitGate.removeVehicle(ticket.getVehicle());
+
+            if (vehicleRemoved) {
+                activeTickets.remove(ticketId);
+                System.out.println("Payment successful! Vehicle can exit.");
+                return true;
+            } else {
+                System.out.println("Error removing vehicle from parking spot!");
+            }
+        } else {
+            System.out.println("Payment failed!");
+        }
+
+        return false;
+    }
+
+    public void displayStatus() {
+        System.out.println("Total parking spots: " + parkingSpotManager.getTotalSpots());
+        System.out.println("Available spots: " + parkingSpotManager.getAvailableSpots());
+        System.out.println("Occupied spots: " + parkingSpotManager.getOccupiedSpots());
+        System.out.println("Active tickets: " + activeTickets.size());
+
+        // Display spots by type
+        parkingSpotManager.displaySpotsByType();
+    }
+}
+
+// Factory pattern for creating parking lot
+package com.dsa2025.learn.lld.questions.parkingLot.factory;
+
+import com.dsa2025.learn.lld.questions.parkingLot.ParkingLotSystem;
+import com.dsa2025.learn.lld.questions.parkingLot.constant.VehicleType;
+import com.dsa2025.learn.lld.questions.parkingLot.cost.CostCalculation;
+import com.dsa2025.learn.lld.questions.parkingLot.cost.HourlyCostCalculation;
+import com.dsa2025.learn.lld.questions.parkingLot.entrance.EntranceGate;
+import com.dsa2025.learn.lld.questions.parkingLot.exit.ExitGate;
+import com.dsa2025.learn.lld.questions.parkingLot.spots.ParkingSpot;
+import com.dsa2025.learn.lld.questions.parkingLot.spots.ParkingSpotManager;
+import com.dsa2025.learn.lld.questions.parkingLot.strategy.NearestFirstParkingStrategy;
+import com.dsa2025.learn.lld.questions.parkingLot.strategy.ParkingStrategy;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+public class ParkingLotFactory {
+
+    public static ParkingLotSystem createParkingLot(String type, int floors) {
+        List<ParkingSpot> spots = createParkingSpots(floors);
+        ParkingSpotManager spotManager = new ParkingSpotManager(spots);
+
+        ParkingStrategy parkingStrategy = new NearestFirstParkingStrategy();
+        CostCalculation costCalculation = new HourlyCostCalculation();
+        PaymentProcessor paymentProcessor = new PaymentProcessorImpl();
+
+        // Create entrance gates
+        Map<String, EntranceGate> entranceGates = new HashMap<>();
+        entranceGates.put("ENTRANCE_1", new EntranceGate(spotManager, parkingStrategy));
+
+        // Create exit gates
+        Map<String, ExitGate> exitGates = new HashMap<>();
+        exitGates.put("EXIT_1", new ExitGate(spotManager, costCalculation, paymentProcessor));
+
+        return new ParkingLotSystem(spotManager, entranceGates, exitGates);
+    }
+
+    private static List<ParkingSpot> createParkingSpots(int floors) {
+        List<ParkingSpot> spots = new ArrayList<>();
+
+        for (int floor = 1; floor <= floors; floor++) {
+            // Create spots for each floor
+            // Floor 1: Only bikes and cars
+            // Floor 2+: Cars and trucks
+
+            if (floor == 1) {
+                // 20 bike spots per floor
+                for (int i = 1; i <= 20; i++) {
+                    spots.add(new ParkingSpot("F" + floor + "_B" + i, VehicleType.BIKE, floor));
+                }
+                // 30 car spots per floor
+                for (int i = 1; i <= 30; i++) {
+                    spots.add(new ParkingSpot("F" + floor + "_C" + i, VehicleType.CAR, floor));
+                }
+            } else {
+                // 15 car spots per floor
+                for (int i = 1; i <= 15; i++) {
+                    spots.add(new ParkingSpot("F" + floor + "_C" + i, VehicleType.CAR, floor));
+                }
+                // 10 truck spots per floor
+                for (int i = 1; i <= 10; i++) {
+                    spots.add(new ParkingSpot("F" + floor + "_T" + i, VehicleType.TRUCK, floor));
+                }
+            }
+        }
+
+        return spots;
+    }
+}
+
+// Enhanced ParkingSpotManager with additional methods
+package com.dsa2025.learn.lld.questions.parkingLot.spots;
+
+import com.dsa2025.learn.lld.questions.parkingLot.constant.VehicleType;
+import com.dsa2025.learn.lld.questions.parkingLot.dto.Vehicle;
+import lombok.Data;
+
+import java.util.List;
+import java.util.Map;
+import java.util.Optional;
+import java.util.stream.Collectors;
+
+@Data
+public class ParkingSpotManager {
+
+    private final List<ParkingSpot> parkingSpots;
+    private final Map<String, ParkingSpot> spotMap; // vehicleNo -> ParkingSpot
+
+    public ParkingSpotManager(List<ParkingSpot> parkingSpots) {
+        this.parkingSpots = parkingSpots;
+        this.spotMap = new HashMap<>();
+    }
+
+    public Optional<ParkingSpot> findParkingSpot(VehicleType vehicleType) {
+        return parkingSpots.stream()
+                .filter(spot -> spot.getVehicleType() == vehicleType && spot.isEmpty())
+                .findFirst();
+    }
+
+    public boolean parkVehicle(ParkingSpot spot, Vehicle vehicle) {
+        if (spot.isEmpty() && spot.getVehicleType() == vehicle.vehicleType()) {
+            spot.parkVehicle(vehicle);
+            spotMap.put(vehicle.vehicleNo(), spot);
+            return true;
+        }
+        return false;
+    }
+
+    public Optional<Vehicle> removeVehicle(String vehicleNo) {
+        if (spotMap.containsKey(vehicleNo)) {
+            ParkingSpot spot = spotMap.get(vehicleNo);
+            Vehicle vehicle = spot.removeVehicle();
+            spotMap.remove(vehicleNo);
+            return Optional.of(vehicle);
+        }
+        return Optional.empty();
+    }
+
+    public int getTotalSpots() {
+        return parkingSpots.size();
+    }
+
+    public long getAvailableSpots() {
+        return parkingSpots.stream().filter(ParkingSpot::isEmpty).count();
+    }
+
+    public long getOccupiedSpots() {
+        return parkingSpots.stream().filter(spot -> !spot.isEmpty()).count();
+    }
+
+    public void displaySpotsByType() {
+        Map<VehicleType, Long> availableByType = parkingSpots.stream()
+                .filter(ParkingSpot::isEmpty)
+                .collect(Collectors.groupingBy(ParkingSpot::getVehicleType, Collectors.counting()));
+
+        System.out.println("Available spots by type:");
+        for (VehicleType type : VehicleType.values()) {
+            System.out.println(type + ": " + availableByType.getOrDefault(type, 0L));
+        }
+    }
+}
+
+// Constants and DTOs
+package com.dsa2025.learn.lld.questions.parkingLot.constant;
+
+public enum VehicleType {
+    BIKE, CAR, TRUCK
+}
+
+public enum PricingStrategyEnum {
+    HOURLY, DAILY, FLAT_RATE
+}
+
+// Vehicle record
+package com.dsa2025.learn.lld.questions.parkingLot.dto;
+
+import com.dsa2025.learn.lld.questions.parkingLot.constant.VehicleType;
+
+public record Vehicle(String vehicleNo, VehicleType vehicleType) {}
+
+// Enhanced ParkingSpot
+package com.dsa2025.learn.lld.questions.parkingLot.spots;
+
+import com.dsa2025.learn.lld.questions.parkingLot.constant.VehicleType;
+import com.dsa2025.learn.lld.questions.parkingLot.dto.Vehicle;
+import lombok.Data;
+
+@Data
+public class ParkingSpot {
+
+    private final String spotId;
+    private final VehicleType vehicleType;
+    private final int floor;
+    private Vehicle parkedVehicle;
+    private boolean isEmpty;
+
+    public ParkingSpot(String spotId, VehicleType vehicleType, int floor) {
+        this.spotId = spotId;
+        this.vehicleType = vehicleType;
+        this.floor = floor;
+        this.isEmpty = true;
+    }
+
+    public void parkVehicle(Vehicle vehicle) {
+        this.parkedVehicle = vehicle;
+        this.isEmpty = false;
+    }
+
+    public Vehicle removeVehicle() {
+        Vehicle vehicle = this.parkedVehicle;
+        this.parkedVehicle = null;
+        this.isEmpty = true;
+        return vehicle;
+    }
+}
+
+// Strategy Pattern Implementation
+package com.dsa2025.learn.lld.questions.parkingLot.strategy;
+
+import com.dsa2025.learn.lld.questions.parkingLot.spots.ParkingSpot;
+import java.util.List;
+
+public interface ParkingStrategy {
+    ParkingSpot findBestSpot(List<ParkingSpot> availableSpots);
+}
+
+package com.dsa2025.learn.lld.questions.parkingLot.strategy;
+
+import com.dsa2025.learn.lld.questions.parkingLot.spots.ParkingSpot;
+import java.util.List;
+
+public class NearestFirstParkingStrategy implements ParkingStrategy {
+
+    @Override
+    public ParkingSpot findBestSpot(List<ParkingSpot> availableSpots) {
+        // Find spot on lowest floor first, then by spot ID
+        return availableSpots.stream()
+                .min((s1, s2) -> {
+                    int floorCompare = Integer.compare(s1.getFloor(), s2.getFloor());
+                    if (floorCompare != 0) return floorCompare;
+                    return s1.getSpotId().compareTo(s2.getSpotId());
+                })
+                .orElse(null);
+    }
+}
+
+// Cost Calculation Strategy Pattern
+package com.dsa2025.learn.lld.questions.parkingLot.cost;
+
+import com.dsa2025.learn.lld.questions.parkingLot.dto.Ticket;
+
+public interface CostCalculation {
+    int calculatePrice(Ticket ticket);
+}
+
+package com.dsa2025.learn.lld.questions.parkingLot.cost;
+
+import com.dsa2025.learn.lld.questions.parkingLot.dto.Ticket;
+import java.time.LocalDateTime;
+import java.time.temporal.ChronoUnit;
+
+public class HourlyCostCalculation implements CostCalculation {
+
+    private static final Map<VehicleType, Integer> HOURLY_RATES = Map.of(
+        VehicleType.BIKE, 10,
+        VehicleType.CAR, 20,
+        VehicleType.TRUCK, 50
+    );
+
+    @Override
+    public int calculatePrice(Ticket ticket) {
+        LocalDateTime entryTime = ticket.getEntryTime();
+        LocalDateTime exitTime = LocalDateTime.now();
+
+        long hours = ChronoUnit.HOURS.between(entryTime, exitTime);
+        if (hours == 0) hours = 1; // Minimum 1 hour charge
+
+        int hourlyRate = HOURLY_RATES.get(ticket.getVehicle().vehicleType());
+        return (int) (hours * hourlyRate);
+    }
+}
+
+package com.dsa2025.learn.lld.questions.parkingLot.cost;
+
+import com.dsa2025.learn.lld.questions.parkingLot.dto.Ticket;
+
+public class FlatRateCostCalculation implements CostCalculation {
+
+    private static final Map<VehicleType, Integer> FLAT_RATES = Map.of(
+        VehicleType.BIKE, 50,
+        VehicleType.CAR, 100,
+        VehicleType.TRUCK, 200
+    );
+
+    @Override
+    public int calculatePrice(Ticket ticket) {
+        return FLAT_RATES.get(ticket.getVehicle().vehicleType());
+    }
+}
+
+// Payment Processing
+package com.dsa2025.learn.lld.questions.parkingLot.factory;
+
+import com.dsa2025.learn.lld.questions.parkingLot.dto.Ticket;
+
+public interface PaymentProcessor {
+    boolean processPayment(int amount, String paymentMode, Ticket ticket);
+}
+
+package com.dsa2025.learn.lld.questions.parkingLot.factory;
+
+import com.dsa2025.learn.lld.questions.parkingLot.dto.Ticket;
+
+public class PaymentProcessorImpl implements PaymentProcessor {
+
+    @Override
+    public boolean processPayment(int amount, String paymentMode, Ticket ticket) {
+        // Simulate payment processing
+        System.out.println("Processing payment of ₹" + amount + " via " + paymentMode);
+
+        // Simulate different success rates for different payment modes
+        return switch (paymentMode) {
+            case "CASH" -> true; // Cash always succeeds
+            case "CARD" -> Math.random() > 0.1; // 90% success rate
+            case "UPI" -> Math.random() > 0.05; // 95% success rate
+            default -> false;
+        };
+    }
+}
+
+// Enhanced Ticket class
+package com.dsa2025.learn.lld.questions.parkingLot.dto;
+
+import com.dsa2025.learn.lld.questions.parkingLot.constant.PricingStrategyEnum;
+import com.dsa2025.learn.lld.questions.parkingLot.spots.ParkingSpot;
+import lombok.Data;
+import java.time.LocalDateTime;
+
+@Data
+public class Ticket {
+    private final String ticketId;
+    private final LocalDateTime entryTime;
+    private final Vehicle vehicle;
+    private final ParkingSpot parkingSpot;
+    private final PricingStrategyEnum pricingStrategy;
+    private LocalDateTime exitTime;
+    private int totalCost;
+
+    public Ticket(String ticketId, LocalDateTime entryTime, Vehicle vehicle,
+                  ParkingSpot parkingSpot, PricingStrategyEnum pricingStrategy) {
+        this.ticketId = ticketId;
+        this.entryTime = entryTime;
+        this.vehicle = vehicle;
+        this.parkingSpot = parkingSpot;
+        this.pricingStrategy = pricingStrategy;
+    }
+}
+
+// === ADDITIONAL IMPROVEMENTS ===
+
+// 1. Thread-Safe Parking Spot Manager
+package com.dsa2025.learn.lld.questions.parkingLot.spots;
+
+import com.dsa2025.learn.lld.questions.parkingLot.constant.VehicleType;
+import com.dsa2025.learn.lld.questions.parkingLot.dto.Vehicle;
+import lombok.Data;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.locks.ReentrantReadWriteLock;
+
+@Data
+public class ThreadSafeParkingSpotManager extends ParkingSpotManager {
+
+    private final ReentrantReadWriteLock lock = new ReentrantReadWriteLock();
+    private final ReentrantReadWriteLock.ReadLock readLock = lock.readLock();
+    private final ReentrantReadWriteLock.WriteLock writeLock = lock.writeLock();
+
+    public ThreadSafeParkingSpotManager(List<ParkingSpot> parkingSpots) {
+        super(parkingSpots);
+        // Use thread-safe map
+        this.spotMap = new ConcurrentHashMap<>();
+    }
+
+    @Override
+    public boolean parkVehicle(ParkingSpot spot, Vehicle vehicle) {
+        writeLock.lock();
+        try {
+            return super.parkVehicle(spot, vehicle);
+        } finally {
+            writeLock.unlock();
+        }
+    }
+
+    @Override
+    public Optional<Vehicle> removeVehicle(String vehicleNo) {
+        writeLock.lock();
+        try {
+            return super.removeVehicle(vehicleNo);
+        } finally {
+            writeLock.unlock();
+        }
+    }
+
+    @Override
+    public Optional<ParkingSpot> findParkingSpot(VehicleType vehicleType) {
+        readLock.lock();
+        try {
+            return super.findParkingSpot(vehicleType);
+        } finally {
+            readLock.unlock();
+        }
+    }
+}
+
+// 2. Validation Utilities
+package com.dsa2025.learn.lld.questions.parkingLot.utils;
+
+import com.dsa2025.learn.lld.questions.parkingLot.constant.VehicleType;
+import java.util.regex.Pattern;
+
+public class ValidationUtils {
+
+    private static final Pattern VEHICLE_NUMBER_PATTERN =
+        Pattern.compile("^[A-Z]{2}\\d{2}[A-Z]{1,2}\\d{4}$");
+
+    private static final Pattern TICKET_ID_PATTERN =
+        Pattern.compile("^[a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12}$");
+
+    public static boolean isValidVehicleNumber(String vehicleNo) {
+        return vehicleNo != null &&
+               VEHICLE_NUMBER_PATTERN.matcher(vehicleNo.toUpperCase()).matches();
+    }
+
+    public static boolean isValidTicketId(String ticketId) {
+        return ticketId != null &&
+               TICKET_ID_PATTERN.matcher(ticketId.toLowerCase()).matches();
+    }
+
+    public static boolean isValidVehicleType(VehicleType vehicleType) {
+        return vehicleType != null;
+    }
+
+    public static boolean isValidPaymentMode(String paymentMode) {
+        return paymentMode != null &&
+               Set.of("CASH", "CARD", "UPI", "DIGITAL_WALLET").contains(paymentMode.toUpperCase());
+    }
+}
+
+// 3. Exception Handling
+package com.dsa2025.learn.lld.questions.parkingLot.exception;
+
+public class ParkingLotException extends Exception {
+    public ParkingLotException(String message) {
+        super(message);
+    }
+
+    public ParkingLotException(String message, Throwable cause) {
+        super(message, cause);
+    }
+}
+
+public class SpotNotAvailableException extends ParkingLotException {
+    public SpotNotAvailableException(String vehicleType) {
+        super("No parking spot available for vehicle type: " + vehicleType);
+    }
+}
+
+public class InvalidTicketException extends ParkingLotException {
+    public InvalidTicketException(String ticketId) {
+        super("Invalid or expired ticket: " + ticketId);
+    }
+}
+
+public class PaymentFailedException extends ParkingLotException {
+    public PaymentFailedException(String paymentMode, int amount) {
+        super("Payment failed for amount: ₹" + amount + " via " + paymentMode);
+    }
+}
+
+// 4. Configuration Management
+package com.dsa2025.learn.lld.questions.parkingLot.config;
+
+import com.dsa2025.learn.lld.questions.parkingLot.constant.VehicleType;
+import lombok.Data;
+import java.util.Map;
+
+@Data
+public class ParkingLotConfiguration {
+
+    private Map<VehicleType, Integer> spotsPerFloor;
+    private Map<VehicleType, Integer> hourlyRates;
+    private Map<VehicleType, Integer> dailyRates;
+    private Map<VehicleType, Integer> flatRates;
+    private int maxFloorsForBikes;
+    private int maxParkingDurationHours;
+
+    // Default configuration
+    public static ParkingLotConfiguration getDefaultConfig() {
+        ParkingLotConfiguration config = new ParkingLotConfiguration();
+
+        config.spotsPerFloor = Map.of(
+            VehicleType.BIKE, 20,
+            VehicleType.CAR, 30,
+            VehicleType.TRUCK, 10
+        );
+
+        config.hourlyRates = Map.of(
+            VehicleType.BIKE, 10,
+            VehicleType.CAR, 20,
+            VehicleType.TRUCK, 50
+        );
+
+        config.dailyRates = Map.of(
+            VehicleType.BIKE, 100,
+            VehicleType.CAR, 200,
+            VehicleType.TRUCK, 500
+        );
+
+        config.flatRates = Map.of(
+            VehicleType.BIKE, 50,
+            VehicleType.CAR, 100,
+            VehicleType.TRUCK, 200
+        );
+
+        config.maxFloorsForBikes = 2;
+        config.maxParkingDurationHours = 24;
+
+        return config;
+    }
+}
+
+// 5. Observer Pattern for Notifications
+package com.dsa2025.learn.lld.questions.parkingLot.observer;
+
+import com.dsa2025.learn.lld.questions.parkingLot.dto.Ticket;
+
+public interface ParkingEventObserver {
+    void onVehicleParked(Ticket ticket);
+    void onVehicleExited(Ticket ticket, int totalCost);
+    void onSpotAvailable(String spotId);
+    void onParkingFull();
+}
+
+package com.dsa2025.learn.lld.questions.parkingLot.observer;
+
+import com.dsa2025.learn.lld.questions.parkingLot.dto.Ticket;
+
+public class NotificationService implements ParkingEventObserver {
+
+    @Override
+    public void onVehicleParked(Ticket ticket) {
+        System.out.println("SMS: Vehicle " + ticket.getVehicle().vehicleNo() +
+                          " parked at spot " + ticket.getParkingSpot().getSpotId());
+    }
+
+    @Override
+    public void onVehicleExited(Ticket ticket, int totalCost) {
+        System.out.println("SMS: Vehicle " + ticket.getVehicle().vehicleNo() +
+                          " exited. Total cost: ₹" + totalCost);
+    }
+
+    @Override
+    public void onSpotAvailable(String spotId) {
+        System.out.println("Alert: Parking spot " + spotId + " is now available");
+    }
+
+    @Override
+    public void onParkingFull() {
+        System.out.println("Alert: Parking lot is full!");
+    }
+}
+
+// 6. Repository Pattern for Data Persistence
+package com.dsa2025.learn.lld.questions.parkingLot.repository;
+
+import com.dsa2025.learn.lld.questions.parkingLot.dto.Ticket;
+import java.util.List;
+import java.util.Optional;
+
+public interface TicketRepository {
+    void save(Ticket ticket);
+    Optional<Ticket> findById(String ticketId);
+    List<Ticket> findByVehicleNumber(String vehicleNo);
+    void update(Ticket ticket);
+    void delete(String ticketId);
+    List<Ticket> findActiveTickets();
+}
+
+package com.dsa2025.learn.lld.questions.parkingLot.repository;
+
+import com.dsa2025.learn.lld.questions.parkingLot.dto.Ticket;
+import java.util.*;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.stream.Collectors;
+
+public class InMemoryTicketRepository implements TicketRepository {
+
+    private final Map<String, Ticket> tickets = new ConcurrentHashMap<>();
+
+    @Override
+    public void save(Ticket ticket) {
+        tickets.put(ticket.getTicketId(), ticket);
+    }
+
+    @Override
+    public Optional<Ticket> findById(String ticketId) {
+        return Optional.ofNullable(tickets.get(ticketId));
+    }
+
+    @Override
+    public List<Ticket> findByVehicleNumber(String vehicleNo) {
+        return tickets.values().stream()
+                .filter(ticket -> ticket.getVehicle().vehicleNo().equals(vehicleNo))
+                .collect(Collectors.toList());
+    }
+
+    @Override
+    public void update(Ticket ticket) {
+        tickets.put(ticket.getTicketId(), ticket);
+    }
+
+    @Override
+    public void delete(String ticketId) {
+        tickets.remove(ticketId);
+    }
+
+    @Override
+    public List<Ticket> findActiveTickets() {
+        return tickets.values().stream()
+                .filter(ticket -> ticket.getExitTime() == null)
+                .collect(Collectors.toList());
+    }
+}
+
+// 7. Enhanced Factory with Configuration
+package com.dsa2025.learn.lld.questions.parkingLot.factory;
+
+import com.dsa2025.learn.lld.questions.parkingLot.ParkingLotSystem;
+import com.dsa2025.learn.lld.questions.parkingLot.config.ParkingLotConfiguration;
+import com.dsa2025.learn.lld.questions.parkingLot.constant.VehicleType;
+import com.dsa2025.learn.lld.questions.parkingLot.cost.*;
+import com.dsa2025.learn.lld.questions.parkingLot.entrance.EntranceGate;
+import com.dsa2025.learn.lld.questions.parkingLot.exit.ExitGate;
+import com.dsa2025.learn.lld.questions.parkingLot.observer.NotificationService;
+import com.dsa2025.learn.lld.questions.parkingLot.repository.InMemoryTicketRepository;
+import com.dsa2025.learn.lld.questions.parkingLot.repository.TicketRepository;
+import com.dsa2025.learn.lld.questions.parkingLot.spots.ParkingSpot;
+import com.dsa2025.learn.lld.questions.parkingLot.spots.ThreadSafeParkingSpotManager;
+import com.dsa2025.learn.lld.questions.parkingLot.strategy.NearestFirstParkingStrategy;
+
+public class EnhancedParkingLotFactory {
+
+    public static ParkingLotSystem createConfigurableParkingLot(
+            String type, int floors, ParkingLotConfiguration config) {
+
+        List<ParkingSpot> spots = createConfigurableSpots(floors, config);
+        ThreadSafeParkingSpotManager spotManager = new ThreadSafeParkingSpotManager(spots);
+
+        // Create cost calculation strategies
+        Map<String, CostCalculation> costStrategies = Map.of(
+            "HOURLY", new HourlyCostCalculation(),
+            "DAILY", new DailyCostCalculation(config),
+            "FLAT_RATE", new FlatRateCostCalculation()
+        );
+
+        // Create repository
+        TicketRepository ticketRepository = new InMemoryTicketRepository();
+
+        // Create observers
+        NotificationService notificationService = new NotificationService();
+
+        // Create payment processor
+        PaymentProcessor paymentProcessor = new EnhancedPaymentProcessor();
+
+        // Create gates
+        Map<String, EntranceGate> entranceGates = createEntranceGates(spotManager);
+        Map<String, ExitGate> exitGates = createExitGates(spotManager, costStrategies, paymentProcessor);
+
+        ParkingLotSystem system = new ParkingLotSystem(
+            spotManager, entranceGates, exitGates, ticketRepository);
+
+        // Add observers
+        system.addObserver(notificationService);
+
+        return system;
+    }
+
+    private static List<ParkingSpot> createConfigurableSpots(
+            int floors, ParkingLotConfiguration config) {
+
+        List<ParkingSpot> spots = new ArrayList<>();
+
+        for (int floor = 1; floor <= floors; floor++) {
+            for (VehicleType vehicleType : VehicleType.values()) {
+                // Skip bikes on higher floors if configured
+                if (vehicleType == VehicleType.BIKE &&
+                    floor > config.getMaxFloorsForBikes()) {
+                    continue;
+                }
+
+                int spotsCount = config.getSpotsPerFloor().getOrDefault(vehicleType, 0);
+
+                for (int i = 1; i <= spotsCount; i++) {
+                    String spotId = String.format("F%d_%s%d",
+                        floor, vehicleType.name().charAt(0), i);
+                    spots.add(new ParkingSpot(spotId, vehicleType, floor));
+                }
+            }
+        }
+
+        return spots;
+    }
+
+    private static Map<String, EntranceGate> createEntranceGates(
+            ThreadSafeParkingSpotManager spotManager) {
+
+        Map<String, EntranceGate> gates = new HashMap<>();
+
+        // Create multiple entrance gates for load distribution
+        for (int i = 1; i <= 2; i++) {
+            gates.put("ENTRANCE_" + i,
+                new EntranceGate(spotManager, new NearestFirstParkingStrategy()));
+        }
+
+        return gates;
+    }
+
+    private static Map<String, ExitGate> createExitGates(
+            ThreadSafeParkingSpotManager spotManager,
+            Map<String, CostCalculation> costStrategies,
+            PaymentProcessor paymentProcessor) {
+
+        Map<String, ExitGate> gates = new HashMap<>();
+
+        // Create multiple exit gates
+        for (int i = 1; i <= 2; i++) {
+            gates.put("EXIT_" + i,
+                new ExitGate(spotManager, costStrategies.get("HOURLY"), paymentProcessor));
+        }
+
+        return gates;
+    }
+}
+
+// 8. Enhanced Payment Processor with Multiple Methods
+package com.dsa2025.learn.lld.questions.parkingLot.factory;
+
+import com.dsa2025.learn.lld.questions.parkingLot.dto.Ticket;
+import com.dsa2025.learn.lld.questions.parkingLot.exception.PaymentFailedException;
+
+public class EnhancedPaymentProcessor implements PaymentProcessor {
+
+    @Override
+    public boolean processPayment(int amount, String paymentMode, Ticket ticket) {
+        try {
+            return switch (paymentMode.toUpperCase()) {
+                case "CASH" -> processCashPayment(amount);
+                case "CARD" -> processCardPayment(amount);
+                case "UPI" -> processUpiPayment(amount);
+                case "DIGITAL_WALLET" -> processDigitalWalletPayment(amount);
+                default -> throw new PaymentFailedException(paymentMode, amount);
+            };
+        } catch (PaymentFailedException e) {
+            System.err.println("Payment processing failed: " + e.getMessage());
+            return false;
+        }
+    }
+
+    private boolean processCashPayment(int amount) {
+        System.out.println("Processing cash payment of ₹" + amount);
+        // Cash payments always succeed
+        return true;
+    }
+
+    private boolean processCardPayment(int amount) {
+        System.out.println("Processing card payment of ₹" + amount);
+        // Simulate card processing with 95% success rate
+        return Math.random() > 0.05;
+    }
+
+    private boolean processUpiPayment(int amount) {
+        System.out.println("Processing UPI payment of ₹" + amount);
+        // UPI has 98% success rate
+        return Math.random() > 0.02;
+    }
+
+    private boolean processDigitalWalletPayment(int amount) {
+        System.out.println("Processing digital wallet payment of ₹" + amount);
+        // Digital wallet has 97% success rate
+        return Math.random() > 0.03;
+    }
+}

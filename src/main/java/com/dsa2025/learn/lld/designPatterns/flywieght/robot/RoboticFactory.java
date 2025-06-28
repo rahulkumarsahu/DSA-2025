@@ -2,6 +2,7 @@ package com.dsa2025.learn.lld.designPatterns.flywieght.robot;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Objects;
 
 public class RoboticFactory {
 
@@ -13,13 +14,13 @@ public class RoboticFactory {
             return roboticObjectCache.get(robotType);
         }
         else {
-            if(robotType == "HUMANOID"){
+            if(Objects.equals(robotType, "HUMANOID")){
                 Sprites humanoidSprite = new Sprites();
                 IRobot humanoidObject = new HumanoidRobot(robotType, humanoidSprite);
                 roboticObjectCache.put(robotType, humanoidObject);
                 return humanoidObject;
             }
-            else if(robotType == "ROBOTICDOG"){
+            else if(Objects.equals(robotType, "ROBOTICDOG")){
                 Sprites roboticDogSprite = new Sprites();
                 IRobot roboticDogObject = new RoboticDog(robotType, roboticDogSprite);
                 roboticObjectCache.put(robotType, roboticDogObject);
