@@ -1,0 +1,392 @@
+// Player.java
+public class Player {
+    private String name;
+    private char symbol;
+
+    public Player(String name, char symbol) {
+        this.name = name;
+        this.symbol = symbol;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public char getSymbol() {
+        return symbol;
+    }
+
+    @Override
+    public String toString() {
+        return name + " (" + symbol + ")";
+    }
+}
+
+// Move.java
+public class Move {
+    private int row;
+    private int col;
+    private Player player;
+
+    public Move(int row, int col, Player player) {
+        this.row = row;
+        this.col = col;
+        this.player = player;
+    }
+
+    public int getRow() {
+        return row;
+    }
+
+    public int getCol() {
+        return col;
+    }
+
+    public Player getPlayer() {
+        return player;
+    }
+}
+
+// Board.java
+public class Board {
+    private char[][] grid;
+    private int size;
+
+    public Board(int size) {
+        this.size = size;
+        this.grid = new char[size][size];
+        initializeBoard();
+    }
+
+    private void initializeBoard() {
+        for (int i = 0; i < size; i++) {
+            for (int j = 0; j < size; j++) {
+                grid[i][j] = '-';
+            }
+        }
+    }
+
+    public boolean isValidMove(int row, int col) {
+        return row >= 0 && row < size && col >= 0 && col < size && grid[row][col] == '-';
+    }
+
+    public void makeMove(Move move) {
+        if (isValidMove(move.getRow(), move.getCol())) {
+            grid[move.getRow()][move.getCol()] = move.getPlayer().getSymbol();
+        } else {
+            throw new IllegalArgumentException("Invalid move");
+        }
+    }
+
+    public boolean isFull() {
+        for (int i = 0; i < size; i++) {
+            for (int j = 0; j < size; j++) {
+                if (grid[i][j] == '-') {
+                    return false;
+                }
+            }
+        }
+        return true;
+    }
+
+    public char[][] getGrid() {
+        return grid.clone();
+    }
+
+    public int getSize() {
+        return size;
+    }
+
+    public void printBoard() {
+        System.out.println("Board:");
+        for (int i = 0; i < size; i++) {
+            for (int j = 0; j < size; j++) {
+                System.out.print(grid[i][j] + " ");
+            }
+            System.out.println();
+        }
+        System.out.println();
+    }
+
+    public void reset() {
+        initializeBoard();
+    }
+}
+
+// GameResult.java
+public enum GameResult {
+    WIN, DRAW, IN_PROGRESS
+}
+
+// WinningStrategy.java - Strategy Pattern for win checking
+public interface WinningStrategy {
+    boolean checkWin(Board board, Move move);
+}
+
+// DefaultWinningStrategy.java
+public class DefaultWinningStrategy implements WinningStrategy {
+    @Override
+    public boolean checkWin(Board board, Move move) {
+        char[][] grid = board.getGrid();
+        int size = board.getSize();
+        char symbol = move.getPlayer().getSymbol();
+        int row = move.getRow();
+        int col = move.getCol();
+
+        // Check row
+        boolean rowWin = true;
+        for (int j = 0; j < size; j++) {
+            if (grid[row][j] != symbol) {
+                rowWin = false;
+                break;
+            }
+        }
+        if (rowWin) return true;
+
+        // Check column
+        boolean colWin = true;
+        for (int i = 0; i < size; i++) {
+            if (grid[i][col] != symbol) {
+                colWin = false;
+                break;
+            }
+        }
+        if (colWin) return true;
+
+        // Check main diagonal
+        if (row == col) {
+            boolean diagWin = true;
+            for (int i = 0; i < size; i++) {
+                if (grid[i][i] != symbol) {
+                    diagWin = false;
+                    break;
+                }
+            }
+            if (diagWin) return true;
+        }
+
+        // Check anti-diagonal
+        if (row + col == size - 1) {
+            boolean antiDiagWin = true;
+            for (int i = 0; i < size; i++) {
+                if (grid[i][size - 1 - i] != symbol) {
+                    antiDiagWin = false;
+                    break;
+                }
+            }
+            if (antiDiagWin) return true;
+        }
+
+        return false;
+    }
+}
+
+// GameState.java
+public class GameState {
+    private GameResult result;
+    private Player winner;
+    private Player currentPlayer;
+
+    public GameState() {
+        this.result = GameResult.IN_PROGRESS;
+        this.winner = null;
+    }
+
+    public GameResult getResult() {
+        return result;
+    }
+
+    public void setResult(GameResult result) {
+        this.result = result;
+    }
+
+    public Player getWinner() {
+        return winner;
+    }
+
+    public void setWinner(Player winner) {
+        this.winner = winner;
+    }
+
+    public Player getCurrentPlayer() {
+        return currentPlayer;
+    }
+
+    public void setCurrentPlayer(Player currentPlayer) {
+        this.currentPlayer = currentPlayer;
+    }
+}
+
+// TicTacToeGame.java - Main Game Controller
+import java.util.*;
+
+public class TicTacToeGame {
+    private Board board;
+    private List<Player> players;
+    private GameState gameState;
+    private WinningStrategy winningStrategy;
+    private int currentPlayerIndex;
+
+    public TicTacToeGame(int boardSize, List<Player> players, WinningStrategy winningStrategy) {
+        this.board = new Board(boardSize);
+        this.players = new ArrayList<>(players);
+        this.gameState = new GameState();
+        this.winningStrategy = winningStrategy;
+        this.currentPlayerIndex = 0;
+        this.gameState.setCurrentPlayer(players.get(0));
+    }
+
+    public GameResult makeMove(int row, int col) {
+        if (gameState.getResult() != GameResult.IN_PROGRESS) {
+            throw new IllegalStateException("Game is already finished");
+        }
+
+        Player currentPlayer = gameState.getCurrentPlayer();
+        Move move = new Move(row, col, currentPlayer);
+
+        if (!board.isValidMove(row, col)) {
+            throw new IllegalArgumentException("Invalid move at position (" + row + ", " + col + ")");
+        }
+
+        board.makeMove(move);
+
+        // Check for win
+        if (winningStrategy.checkWin(board, move)) {
+            gameState.setResult(GameResult.WIN);
+            gameState.setWinner(currentPlayer);
+            return GameResult.WIN;
+        }
+
+        // Check for draw
+        if (board.isFull()) {
+            gameState.setResult(GameResult.DRAW);
+            return GameResult.DRAW;
+        }
+
+        // Switch to next player
+        currentPlayerIndex = (currentPlayerIndex + 1) % players.size();
+        gameState.setCurrentPlayer(players.get(currentPlayerIndex));
+
+        return GameResult.IN_PROGRESS;
+    }
+
+    public void printBoard() {
+        board.printBoard();
+    }
+
+    public GameState getGameState() {
+        return gameState;
+    }
+
+    public Board getBoard() {
+        return board;
+    }
+
+    public void resetGame() {
+        board.reset();
+        gameState = new GameState();
+        currentPlayerIndex = 0;
+        gameState.setCurrentPlayer(players.get(0));
+    }
+
+    public Player getCurrentPlayer() {
+        return gameState.getCurrentPlayer();
+    }
+}
+
+// TicTacToeGameBuilder.java - Builder Pattern for game creation
+public class TicTacToeGameBuilder {
+    private int boardSize = 3;
+    private List<Player> players = new ArrayList<>();
+    private WinningStrategy winningStrategy = new DefaultWinningStrategy();
+
+    public TicTacToeGameBuilder setBoardSize(int size) {
+        if (size < 3) {
+            throw new IllegalArgumentException("Board size must be at least 3");
+        }
+        this.boardSize = size;
+        return this;
+    }
+
+    public TicTacToeGameBuilder addPlayer(String name, char symbol) {
+        if (players.size() >= 2) {
+            throw new IllegalStateException("Cannot add more than 2 players");
+        }
+        players.add(new Player(name, symbol));
+        return this;
+    }
+
+    public TicTacToeGameBuilder setWinningStrategy(WinningStrategy strategy) {
+        this.winningStrategy = strategy;
+        return this;
+    }
+
+    public TicTacToeGame build() {
+        if (players.size() != 2) {
+            throw new IllegalStateException("Exactly 2 players are required");
+        }
+
+        // Validate unique symbols
+        Set<Character> symbols = new HashSet<>();
+        for (Player player : players) {
+            if (!symbols.add(player.getSymbol())) {
+                throw new IllegalArgumentException("Players must have unique symbols");
+            }
+        }
+
+        return new TicTacToeGame(boardSize, players, winningStrategy);
+    }
+}
+
+// Main.java - Demo application
+import java.util.Scanner;
+
+public class Main {
+    public static void main(String[] args) {
+        // Create game using builder pattern
+        TicTacToeGame game = new TicTacToeGameBuilder()
+            .setBoardSize(3)
+            .addPlayer("Alice", 'X')
+            .addPlayer("Bob", 'O')
+            .setWinningStrategy(new DefaultWinningStrategy())
+            .build();
+
+        Scanner scanner = new Scanner(System.in);
+
+        System.out.println("Welcome to Tic Tac Toe!");
+        System.out.println("Enter moves as 'row col' (0-indexed)");
+
+        while (game.getGameState().getResult() == GameResult.IN_PROGRESS) {
+            game.printBoard();
+
+            Player currentPlayer = game.getCurrentPlayer();
+            System.out.println(currentPlayer + "'s turn. Enter move (row col): ");
+
+            try {
+                int row = scanner.nextInt();
+                int col = scanner.nextInt();
+
+                GameResult result = game.makeMove(row, col);
+
+                if (result == GameResult.WIN) {
+                    game.printBoard();
+                    System.out.println("Congratulations! " + game.getGameState().getWinner() + " wins!");
+                    break;
+                } else if (result == GameResult.DRAW) {
+                    game.printBoard();
+                    System.out.println("It's a draw!");
+                    break;
+                }
+
+            } catch (IllegalArgumentException e) {
+                System.out.println("Error: " + e.getMessage());
+            } catch (Exception e) {
+                System.out.println("Invalid input. Please enter two integers.");
+                scanner.nextLine(); // Clear invalid input
+            }
+        }
+
+        System.out.println("Game Over!");
+        scanner.close();
+    }
+}

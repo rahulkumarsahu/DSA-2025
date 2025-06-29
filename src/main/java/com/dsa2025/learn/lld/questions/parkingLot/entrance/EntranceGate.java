@@ -1,11 +1,9 @@
 package com.dsa2025.learn.lld.questions.parkingLot.entrance;
 
-import com.dsa2025.learn.lld.questions.parkingLot.constant.PricingStrategyEnum;
 import com.dsa2025.learn.lld.questions.parkingLot.dto.Ticket;
 import com.dsa2025.learn.lld.questions.parkingLot.dto.Vehicle;
 import com.dsa2025.learn.lld.questions.parkingLot.spots.ParkingSpot;
 import com.dsa2025.learn.lld.questions.parkingLot.spots.ParkingSpotManager;
-import lombok.Data;
 
 import java.time.LocalDateTime;
 import java.util.Optional;
