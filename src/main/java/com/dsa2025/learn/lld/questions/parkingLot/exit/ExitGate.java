@@ -12,8 +12,8 @@ import java.util.Optional;
 public class ExitGate {
 
     private Ticket ticket;
-    private CostCalculation costCalculation;
-    private ParkingSpotManager parkingSpotManager;
+    private final CostCalculation costCalculation;
+    private final ParkingSpotManager parkingSpotManager;
 
 
     public ExitGate(ParkingSpotManager parkingSpotManager, CostCalculation costCalculation) {
@@ -28,6 +28,8 @@ public class ExitGate {
         Optional<Vehicle> vehicle = parkingSpotManager.removeVehicle(ticket.vehicle().vehicleNo());
         return vehicle.isPresent();
     }
+
+
 
     /**
      * This method will be used to calculate the price

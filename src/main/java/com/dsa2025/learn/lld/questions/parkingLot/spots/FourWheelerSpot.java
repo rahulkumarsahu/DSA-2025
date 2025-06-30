@@ -10,4 +10,6 @@ public class FourWheelerSpot extends ParkingSpot {
         super(spotId, VehicleType.FOUR_WHEELER.getBasePrice(), parkingStrategyType, SpotSize.MEDIUM);
     }
 
+
+
 }

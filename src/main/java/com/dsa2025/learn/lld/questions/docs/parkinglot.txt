@@ -248,7 +248,7 @@ public class ParkingLotSystem {
         // Using first available exit gate
         ExitGate exitGate = exitGates.values().iterator().next();
 
-        // Calculate and display price
+        // Calculate and elevatorDisplay price
         int price = exitGate.calculatePrice(ticket);
         System.out.println("Parking fee: ₹" + price);
 

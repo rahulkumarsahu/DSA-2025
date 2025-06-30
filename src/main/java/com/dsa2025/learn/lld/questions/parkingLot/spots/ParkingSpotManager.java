@@ -10,8 +10,8 @@ import java.util.Optional;
  * This class manages the list of parking spots.
  */
 public abstract class ParkingSpotManager {
-    private List<ParkingSpot> parkingSpotList;
-    private ParkingStrategy parkingStrategy;
+    private final List<ParkingSpot> parkingSpotList;
+    private final ParkingStrategy parkingStrategy;
 
     ParkingSpotManager(List<ParkingSpot> parkingSpotList, ParkingStrategy parkingStrategy) {
         this.parkingSpotList = parkingSpotList;

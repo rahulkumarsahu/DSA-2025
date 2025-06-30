@@ -13,7 +13,7 @@ import java.util.UUID;
 public class EntranceGate {
 
     private Ticket ticket;
-    private ParkingSpotManager parkingSpotManager;
+    private final ParkingSpotManager parkingSpotManager;
     private ParkingSpot parkingSpot;
 
     public EntranceGate(ParkingSpotManager parkingSpotManager) {
