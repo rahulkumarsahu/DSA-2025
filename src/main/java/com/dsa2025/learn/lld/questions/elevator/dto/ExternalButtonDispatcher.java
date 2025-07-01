@@ -99,18 +99,18 @@ public class ExternalButtonDispatcher {
 
             // Odd elevator for odd floor
             if (elevatorId % 2 == 1 && floor % 2 == 1) {
-                return controller;  // Return odd elevator for odd floor
+                return controller;  // Return odd elevator for an odd floor
             }
-            // Even elevator for even floor
+            // Even elevator for an even floor
             else if (elevatorId % 2 == 0 && floor % 2 == 0) {
-                return controller;  // Return even elevator for even floor
+                return controller;  // Return even elevator for an even floor
             }
         }
         return null;  // No matching odd/even elevator found
     }
 
     /**
-     * CLOSEST_CAR Algorithm: Find closest available elevator considering direction and proximity
+     * CLOSEST_CAR Algorithm: Find the closest available elevator considering direction and proximity
      * @param floor Requested floor
      * @param direction Requested direction
      * @return ElevatorController of closest suitable elevator

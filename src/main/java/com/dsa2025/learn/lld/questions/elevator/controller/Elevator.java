@@ -82,7 +82,7 @@ public class Elevator {
      * and show the current status called whenever a new floor comes
      */
     private void updateDisplay() {
-        elevatorDisplay.setDisplay(this.currentFloor, this.elevatorDirection); // Update display with current floor and direction
+        elevatorDisplay.setDisplay(this.currentFloor, this.elevatorDirection); // Update display with the current floor and direction
         elevatorDisplay.showDisplay(); // Show the updated display
     }
 
