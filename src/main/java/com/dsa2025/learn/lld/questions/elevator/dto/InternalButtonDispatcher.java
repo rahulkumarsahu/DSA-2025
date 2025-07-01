@@ -1,10 +1,7 @@
 package com.dsa2025.learn.lld.questions.elevator.dto;
 
 import com.dsa2025.learn.lld.questions.elevator.controller.Elevator;
-import com.dsa2025.learn.lld.questions.elevator.controller.ElevatorController;
 import com.dsa2025.learn.lld.questions.elevator.controller.ElevatorCreator;
-
-import java.util.List;
 
 /**
  * InternalButtonDispatcher handles internal elevator requests
