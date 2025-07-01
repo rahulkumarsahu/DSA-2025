@@ -48,24 +48,8 @@ public class Elevator {
         return elevatorId;
     }
 
-    public ElevatorDisplay getElevatorDisplay() {
-        return elevatorDisplay;
-    }
-
-    public InternalButton getInternalButton() {
-        return internalButton;
-    }
-
-    public ElevatorDoor getElevatorDoor() {
-        return elevatorDoor;
-    }
-
     public int getCurrentFloor() {
         return currentFloor;
-    }
-
-    public void setCurrentFloor(int currentFloor) {
-        this.currentFloor = currentFloor;
     }
 
     public ElevatorState getElevatorState() {
@@ -82,10 +66,6 @@ public class Elevator {
 
     public void setElevatorDirection(Direction elevatorDirection) {
         this.elevatorDirection = elevatorDirection;
-    }
-
-    public void showDisplay() {
-        elevatorDisplay.showDisplay();
     }
 
     /**
@@ -108,17 +88,17 @@ public class Elevator {
 
     /**
      * This method will be used to move the elevator from the current floor to a destination floor
+     *
      * @param destinationFloor Target floor to reach
-     * @param direction direction of the movement
-     * @return Boolean indicating if movement is successful
+     * @param direction        direction of the movement
      */
-    public Boolean moveElevator(int destinationFloor, Direction direction) {
+    public void moveElevator(int destinationFloor, Direction direction) {
 
         // If already at a destination floor, open the door and close the door
 
         if (this.currentFloor == destinationFloor) {
             openAndCloseDoor(); // open the door, wait, close
-            return true; // movement successful
+            return; // movement successful
         }
 
         // set elevator state to moving and update direction
@@ -138,7 +118,6 @@ public class Elevator {
         // Elevator has reached destination
         setElevatorState(ElevatorState.IDLE);    // Change state back to IDLE
         openAndCloseDoor();              // Open door for passengers
-        return true;                     // Movement completed successfully
     }
 
     /**

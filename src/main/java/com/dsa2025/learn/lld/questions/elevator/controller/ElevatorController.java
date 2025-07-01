@@ -18,7 +18,6 @@ public class ElevatorController {
     // This is to store when lift is going from down to up
     private final PriorityQueue<Integer> upQueue; // Queue for upward floor request (min-heap)
     private final AtomicBoolean isRunning;             // Thread-safe flag for controller state
-    private Thread controllerThread;                   // Background thread for processing requests
 
     /**
      * Constructor to initialize controller with an elevator
@@ -71,7 +70,8 @@ public class ElevatorController {
     private void startControllerIfNeeded() {
         // Start controller only if it's not already running
         if (isRunning.compareAndSet(false, true)) {
-            controllerThread = new Thread(this::controlElevator); // Create new thread
+            // Background thread for processing requests
+            Thread controllerThread = new Thread(this::controlElevator); // Create new thread
             controllerThread.start();                             // Start the thread
         }
     }
