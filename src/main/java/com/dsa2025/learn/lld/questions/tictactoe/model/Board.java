@@ -1,87 +1,94 @@
 package com.dsa2025.learn.lld.questions.tictactoe.model;
 
-import java.util.ArrayList;
-import java.util.List;
-
 public class Board {
 
-    private int size;
-    private PlayingPiece[][] board;
+    private static final int SIZE = 3;
 
-    public Board(int size) {
-        this.size = size;
-        board = new PlayingPiece[size][size];
+    private final PlayingPieceEnum[][] grid;
+
+    public Board() {
+        this.grid = new PlayingPieceEnum[SIZE][SIZE];
+        initializeBoard();
     }
 
-    public int getSize() {
-        return size;
-    }
-
-    public void setSize(int size) {
-        this.size = size;
-    }
-
-    public PlayingPiece[][] getBoard() {
-        return board;
-    }
-
-    public void setBoard(PlayingPiece[][] board) {
-        this.board = board;
-    }
-
-    /**
-     * This method will check if the place is empty or not if it is emptier than player can play his move and keep its piece
-     * @param row row
-     * @param column column
-     * @param playingPiece playingPiece
-     * @return boolean
-     */
-    public boolean addPiece(int row, int column, PlayingPiece playingPiece) {
-
-        if(board[row][column] != null) {
-            return false;
-        }
-        board[row][column] = playingPiece;
-        return true;
-    }
-
-    /**
-     * This method will return the free cells where player can play his move
-     * @return List<Cell>
-     */
-    public List<Cell> getFreeCells() {
-        List<Cell> freeCells = new ArrayList<>();
-
-        for (int i = 0; i < size; i++) {
-            for (int j = 0; j < size; j++) {
-                if (board[i][j] == null) {
-                    Cell cell = new Cell(i, j);
-                    freeCells.add(cell);
-                }
+    private void initializeBoard() {
+        for (int i = 0; i < SIZE; i++) {
+            for (int j = 0; j < SIZE; j++) {
+                grid[i][j] = PlayingPieceEnum.EMPTY;
             }
         }
-
-        return freeCells;
     }
 
-    /**
-     * This method will be used to print the board after one move
-     */
-    public void printBoard() {
-
-        for (int i = 0; i < size; i++) {
-            for (int j = 0; j < size; j++) {
-                if (board[i][j] != null) {
-                    System.out.print(board[i][j].getType().name() + "   ");
-                } else {
-                    System.out.print("    ");
-
-                }
-                System.out.print(" | ");
+    public void display() {
+        System.out.println("\n  0   1   2");
+        for (int i = 0; i < SIZE; i++) {
+            System.out.print(i + " ");
+            for (int j = 0; j < SIZE; j++) {
+                System.out.print(grid[i][j].getSymbol());
+                if (j < SIZE - 1) System.out.print(" | ");
             }
             System.out.println();
-
+            if (i < SIZE - 1) System.out.println("  ---------");
         }
+        System.out.println();
+    }
+
+    public boolean isValidMove(Move move) {
+        int row = move.row();
+        int col = move.col();
+
+        return row >= 0 && row < SIZE &&
+                col >= 0 && col < SIZE &&
+                grid[row][col] == PlayingPieceEnum.EMPTY;
+    }
+
+    public void makeMove(Move move, PlayingPieceEnum pieceType) {
+        if (isValidMove(move)) {
+            grid[move.row()][move.col()] = pieceType;
+        }
+    }
+
+    public boolean hasWinner(PlayingPieceEnum pieceType) {
+        return checkRows(pieceType) || checkColumns(pieceType) || checkDiagonals(pieceType);
+    }
+
+    private boolean checkRows(PlayingPieceEnum pieceType) {
+        for (int i = 0; i < SIZE; i++) {
+            if (grid[i][0] == pieceType && grid[i][1] == pieceType && grid[i][2] == pieceType) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    private boolean checkColumns(PlayingPieceEnum pieceType) {
+        for (int j = 0; j < SIZE; j++) {
+            if (grid[0][j] == pieceType && grid[1][j] == pieceType && grid[2][j] == pieceType) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    private boolean checkDiagonals(PlayingPieceEnum pieceType) {
+        // Main diagonal
+        boolean mainDiagonal = grid[0][0] == pieceType && grid[1][1] == pieceType && grid[2][2] == pieceType;
+
+        // Anti-diagonal
+        boolean antiDiagonal = grid[0][2] == pieceType && grid[1][1] == pieceType && grid[2][0] == pieceType;
+
+        return mainDiagonal || antiDiagonal;
+    }
+
+    public boolean isFull() {
+        for (int i = 0; i < SIZE; i++) {
+            for (int j = 0; j < SIZE; j++) {
+                if (grid[i][j] == PlayingPieceEnum.EMPTY) {
+                    return false;
+                }
+            }
+        }
+        return true;
     }
 
 }

@@ -1,28 +1,25 @@
 package com.dsa2025.learn.lld.questions.tictactoe.model;
 
-public class Player {
+/**
+ * Tic Tac Toe Game demonstrating OOP concepts
+ * - Encapsulation, Inheritance, Polymorphism, Abstraction
+ */
 
-    private String name;
-    private PlayingPiece piece;
+// ABSTRACTION - Abstract base class for different types of players
+public abstract class Player {
+    protected String name;
+    protected PlayingPiece piece;
 
     public Player(String name, PlayingPiece piece) {
         this.name = name;
         this.piece = piece;
     }
 
-    public String getName() {
-        return name;
-    }
+    // Abstract method - forces subclasses to implement
+    public abstract Move getMove(Board board);
 
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public PlayingPiece getPiece() {
-        return piece;
-    }
-
-    public void setPiece(PlayingPiece piece) {
-        this.piece = piece;
-    }
+    // Getters - ENCAPSULATION
+    public String getName() { return name; }
+    public PlayingPiece getPiece() { return piece; }
+    public PlayingPieceEnum getPieceType() { return piece.getPieceType(); }
 }

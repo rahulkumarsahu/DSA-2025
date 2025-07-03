@@ -1,6 +1,5 @@
 package com.dsa2025.learn.lld.questions.tictactoe.model;
 
-public enum PlayerPieceEnum {
+public record Move(int row, int col) {
 
-    X, O;
 }

@@ -2,17 +2,17 @@ package com.dsa2025.learn.lld.questions.tictactoe.model;
 
 public class PlayingPiece {
 
-    private PlayerPieceEnum type;
+    protected PlayingPieceEnum pieceType;
 
-    public PlayingPiece(PlayerPieceEnum type) {
-        this.type = type;
+    public PlayingPiece(PlayingPieceEnum pieceType) {
+        this.pieceType = pieceType;
     }
 
-    public PlayerPieceEnum getType() {
-        return type;
+    public PlayingPieceEnum getPieceType() {
+        return pieceType;
     }
 
-    public void setType(PlayerPieceEnum type) {
-        this.type = type;
+    public char getSymbol() {
+        return pieceType.getSymbol();
     }
 }
