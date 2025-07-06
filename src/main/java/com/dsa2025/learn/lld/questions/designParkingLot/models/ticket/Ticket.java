@@ -1,10 +1,12 @@
 package com.dsa2025.learn.lld.questions.designParkingLot.models.ticket;
 
+import com.dsa2025.learn.lld.questions.designParkingLot.models.mobility.Vehicle;
 import com.dsa2025.learn.lld.questions.designParkingLot.models.spots.ParkingSpot;
 import com.dsa2025.learn.lld.questions.designParkingLot.strategy.pricing.PricingStrategy;
-import com.dsa2025.learn.lld.questions.parkingLot.dto.Vehicle;
+
 
 import java.time.LocalDateTime;
+import java.util.UUID;
 
 public class Ticket {
 
@@ -12,15 +14,12 @@ public class Ticket {
     private LocalDateTime entryTime;
     private Vehicle vehicle;
     private ParkingSpot parkingSpot;
-    private PricingStrategy pricingStrategy;
 
-    public Ticket(String ticketId, LocalDateTime entryTime, Vehicle vehicle, ParkingSpot parkingSpot,
-                  PricingStrategy pricingStrategy) {
-        this.ticketId = ticketId;
+    public Ticket(LocalDateTime entryTime, Vehicle vehicle, ParkingSpot parkingSpot) {
+        this.ticketId = UUID.randomUUID().toString();
         this.entryTime = entryTime;
         this.vehicle = vehicle;
         this.parkingSpot = parkingSpot;
-        this.pricingStrategy = pricingStrategy;
     }
 
     public String getTicketId() {
@@ -55,11 +54,13 @@ public class Ticket {
         this.parkingSpot = parkingSpot;
     }
 
-    public PricingStrategy getPricingStrategy() {
-        return pricingStrategy;
-    }
-
-    public void setPricingStrategy(PricingStrategy pricingStrategy) {
-        this.pricingStrategy = pricingStrategy;
+    @Override
+    public String toString() {
+        return "Ticket{" +
+                "ticketId='" + ticketId + '\'' +
+                ", entryTime=" + entryTime +
+                ", vehicle=" + vehicle +
+                ", parkingSpot=" + parkingSpot +
+                '}';
     }
 }

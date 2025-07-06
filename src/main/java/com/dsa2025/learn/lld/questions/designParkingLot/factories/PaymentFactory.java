@@ -8,7 +8,7 @@ import com.dsa2025.learn.lld.questions.designParkingLot.strategy.payment.UPIPaym
 
 public class PaymentFactory {
 
-    public static PaymentStrategy getPricingStrategy(PaymentType paymentType) {
+    public static PaymentStrategy getPaymentStrategy(PaymentType paymentType) {
         return switch (paymentType) {
             case CASH -> new CashPaymentStrategy();
             case CARD -> new CardPaymentStrategy();

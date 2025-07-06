@@ -1,13 +1,12 @@
 package com.dsa2025.learn.lld.questions.designParkingLot.service;
 
-import com.dsa2025.learn.lld.questions.parkingLot.dto.Ticket;
-import com.dsa2025.learn.lld.questions.parkingLot.dto.Vehicle;
-import com.dsa2025.learn.lld.questions.parkingLot.spots.ParkingSpot;
-import com.dsa2025.learn.lld.questions.parkingLot.spots.ParkingSpotManager;
+import com.dsa2025.learn.lld.questions.designParkingLot.models.mobility.Vehicle;
+import com.dsa2025.learn.lld.questions.designParkingLot.models.spots.ParkingSpot;
+import com.dsa2025.learn.lld.questions.designParkingLot.models.spots.manager.ParkingSpotManager;
+import com.dsa2025.learn.lld.questions.designParkingLot.models.ticket.Ticket;
 
 import java.time.LocalDateTime;
 import java.util.Optional;
-import java.util.UUID;
 
 public class ParkingLotEntryService {
 
@@ -36,7 +35,7 @@ public class ParkingLotEntryService {
         Boolean status = Boolean.FALSE;
 
         if (parkingSpot.isPresent()) {
-            status = parkingSpotManager.parkVehicle(parkingSpot.get(), vehicle);
+            status = parkingSpotManager.requestParkVehicle(parkingSpot.get(), vehicle);
         }
 
         if (status) {
@@ -56,18 +55,11 @@ public class ParkingLotEntryService {
     public Optional<Ticket> ticketIssuer(Vehicle vehicle) {
         Optional<ParkingSpot> bookedSpot = bookSpot(vehicle);
 
-        if (bookedSpot.isPresent()) {
-            String ticketId = UUID.randomUUID().toString();
-            Ticket ticket = new Ticket(
-                    ticketId,
-                    LocalDateTime.now(),
-                    vehicle,
-                    bookedSpot.get()
-            );
-            return Optional.of(ticket);
-        }
-
-        return Optional.empty();
+        return bookedSpot.map(parkingSpot -> new Ticket(
+                LocalDateTime.now(),
+                vehicle,
+                parkingSpot
+        ));
     }
 
 }

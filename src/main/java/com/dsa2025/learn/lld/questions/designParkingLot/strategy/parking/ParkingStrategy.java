@@ -8,5 +8,5 @@ import java.util.Optional;
 public interface ParkingStrategy {
 
 
-    public abstract Optional<ParkingSpot> findSpot(List<ParkingSpot> parkingSpotList);
+    Optional<ParkingSpot> findSpot(List<ParkingSpot> parkingSpotList);
 }
