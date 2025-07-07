@@ -14,12 +14,12 @@ import java.util.UUID;
  */
 public class ParkingSpot {
 
-    private String spotId;
+    private final String spotId;
     private Vehicle vehicle;
     private ParkingLotStatus parkingLotStatus;
-    private ParkingSpotType parkingSpotType;
-    private double basePrice;
-    private PricingType pricingType;
+    private final ParkingSpotType parkingSpotType;
+    private final double basePrice;
+    private final PricingType pricingType;
 
     public ParkingSpot(ParkingSpotType parkingSpotType,
                        double basePrice, PricingType pricingType) {
@@ -66,14 +66,6 @@ public class ParkingSpot {
         this.vehicle = vehicle;
     }
 
-    public String getSpotId() {
-        return spotId;
-    }
-
-    public void setSpotId(String spotId) {
-        this.spotId = spotId;
-    }
-
     public ParkingLotStatus getParkingLotStatus() {
         return parkingLotStatus;
     }
@@ -86,23 +78,12 @@ public class ParkingSpot {
         return parkingSpotType;
     }
 
-    public void setParkingSpotType(ParkingSpotType parkingSpotType) {
-        this.parkingSpotType = parkingSpotType;
-    }
-
     public double getBasePrice() {
         return basePrice;
-    }
-
-    public void setBasePrice(double basePrice) {
-        this.basePrice = basePrice;
     }
 
     public PricingType getPricingType() {
         return pricingType;
     }
 
-    public void setPricingType(PricingType pricingType) {
-        this.pricingType = pricingType;
-    }
 }

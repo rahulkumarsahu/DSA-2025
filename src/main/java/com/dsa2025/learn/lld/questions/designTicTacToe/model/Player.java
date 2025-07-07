@@ -20,6 +20,5 @@ public abstract class Player {
 
     // Getters - ENCAPSULATION
     public String getName() { return name; }
-    public PlayingPiece getPiece() { return piece; }
     public PlayingPieceEnum getPieceType() { return piece.getPieceType(); }
 }

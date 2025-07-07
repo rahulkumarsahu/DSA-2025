@@ -46,7 +46,8 @@ public class ParkingLotMain {
 
         PaymentStrategy paymentStrategy = PaymentFactory.getPaymentStrategy(PaymentType.UPI);
 
-        PricingStrategy pricingStrategy = PricingStrategyFactory.getPricingStrategy(PricingType.HOURLY);
+        PricingStrategy pricingStrategy = PricingStrategyFactory.
+                getPricingStrategy(ticket.get().getParkingSpot().getPricingType());
 
         CostComputation costComputation = CostComputationFactory.getCostCalculator(
                 CostCalculationType.WITHOUT_CHARGING, pricingStrategy);

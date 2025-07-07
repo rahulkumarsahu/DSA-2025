@@ -20,7 +20,7 @@ public class ExternalButtonDispatcher {
      * Defaults to CLOSEST_CAR algorithm
      */
     public ExternalButtonDispatcher() {
-        this.algorithm = DispatchingAlgorithm.CLOSEST_CAR;  // Default algorithm
+        this.algorithm = DispatchingAlgorithm.FIXED_FLOOR;  // Default algorithm
     }
 
     /**
@@ -49,8 +49,6 @@ public class ExternalButtonDispatcher {
     public void submitExternalRequest(int floor, Direction direction) {
         ElevatorController selectedController = switch (algorithm) {
             case FIXED_FLOOR -> useFixedFloorAlgorithm(floor);  // Use fixed floor assignment
-            case ODD_EVEN -> useOddEvenAlgorithm(floor);     // Use odd/even assignment
-            case CLOSEST_CAR -> useClosestCarAlgorithm(floor, direction);  // Use the closest car
         };  // Controller to handle the request
 
         // Select elevator based on configured algorithm
@@ -86,71 +84,5 @@ public class ExternalButtonDispatcher {
             }
         }
         return null;  // No elevator assigned to this floor range
-    }
-
-    /**
-     * ODD_EVEN Algorithm: Odd elevators serve odd floors, even elevators serve even floors
-     * @param floor Requested floor
-     * @return ElevatorController based on odd/even matching, or null if no match
-     */
-    private ElevatorController useOddEvenAlgorithm(int floor) {
-        for (ElevatorController controller : elevatorControllers) {
-            int elevatorId = controller.getElevator().getElevatorId();  // Get elevator ID
-
-            // Odd elevator for odd floor
-            if (elevatorId % 2 == 1 && floor % 2 == 1) {
-                return controller;  // Return odd elevator for an odd floor
-            }
-            // Even elevator for an even floor
-            else if (elevatorId % 2 == 0 && floor % 2 == 0) {
-                return controller;  // Return even elevator for an even floor
-            }
-        }
-        return null;  // No matching odd/even elevator found
-    }
-
-    /**
-     * CLOSEST_CAR Algorithm: Find the closest available elevator considering direction and proximity
-     * @param floor Requested floor
-     * @param direction Requested direction
-     * @return ElevatorController of closest suitable elevator
-     */
-    private ElevatorController useClosestCarAlgorithm(int floor, Direction direction) {
-        ElevatorController best = null;      // Best elevator found so far
-        int minDistance = Integer.MAX_VALUE; // Minimum distance found so far
-
-        // First pass: Find elevator moving in the same direction or idle
-        for (ElevatorController controller : elevatorControllers) {
-            int elevatorFloor = controller.getElevator().getCurrentFloor();  // Current elevator floor
-            int distance = Math.abs(floor - elevatorFloor);                  // Distance to a requested floor
-
-            // Check if elevator is moving in the same direction or is idle
-            boolean sameDirection = controller.getElevator().getElevatorDirection() == direction;
-            boolean isIdle = controller.getElevator().getElevatorState() ==
-                    com.dsa2025.learn.lld.questions.designElevatorSystem.constant.ElevatorState.IDLE;
-
-            // Prefer elevator with the same direction or idle, and closer distance
-            if ((sameDirection || isIdle) && distance < minDistance) {
-                minDistance = distance;  // Update minimum distance
-                best = controller;       // Update best elevator
-            }
-        }
-
-        // Second pass: If no optimal elevator found, use the closest one regardless of direction
-        if (best == null && !elevatorControllers.isEmpty()) {
-            best = elevatorControllers.getFirst();  // Start with first elevator
-            minDistance = Math.abs(floor - best.getElevator().getCurrentFloor());  // Calculate initial distance
-
-            // Find elevator with minimum distance
-            for (ElevatorController controller : elevatorControllers) {
-                int distance = Math.abs(floor - controller.getElevator().getCurrentFloor());  // Calculate distance
-                if (distance < minDistance) {
-                    minDistance = distance;  // Update minimum distance
-                    best = controller;       // Update best elevator
-                }
-            }
-        }
-
-        return best;  // Return the best elevator found
     }
 }
