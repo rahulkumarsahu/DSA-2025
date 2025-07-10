@@ -50,7 +50,6 @@ public class RemoveStonesToMinimizeTheTotal {
                 break;
             }
         }
-
         return totalSum;
     }
 }
