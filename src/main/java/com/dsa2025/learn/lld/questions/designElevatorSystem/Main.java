@@ -32,6 +32,8 @@ public class Main {
 
         // Demonstrate different dispatching algorithms
         runAlgorithmDemo(building);
+
+        System.out.println("=== Elevator System Ended ===");
     }
 
     /**
