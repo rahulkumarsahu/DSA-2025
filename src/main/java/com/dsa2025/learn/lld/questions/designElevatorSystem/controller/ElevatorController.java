@@ -77,7 +77,7 @@ public class ElevatorController {
     }
 
     /**
-     * Main control loop that runs in background thread
+     * ElevatorSystem control loop that runs in background thread
      * Processes requests from queues and moves elevator accordingly
      */
     private void controlElevator() {

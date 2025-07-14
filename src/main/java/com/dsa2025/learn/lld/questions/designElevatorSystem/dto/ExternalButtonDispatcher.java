@@ -41,7 +41,7 @@ public class ExternalButtonDispatcher {
     }
 
     /**
-     * The Main method to submit external elevator request
+     * The ElevatorSystem method to submit external elevator request
      * Uses configured algorithm to determine which elevator to dispatch
      * @param floor Floor from which request is made
      * @param direction Direction requested (UP or DOWN)

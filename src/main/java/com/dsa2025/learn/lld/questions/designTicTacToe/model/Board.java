@@ -72,7 +72,7 @@ public class Board {
     }
 
     private boolean checkDiagonals(PlayingPieceEnum pieceType) {
-        // Main diagonal
+        // ElevatorSystem diagonal
         boolean mainDiagonal = grid[0][0] == pieceType && grid[1][1] == pieceType && grid[2][2] == pieceType;
 
         // Anti-diagonal

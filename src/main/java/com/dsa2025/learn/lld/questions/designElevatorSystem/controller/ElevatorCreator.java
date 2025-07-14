@@ -17,7 +17,7 @@ public class ElevatorCreator {
     // Static block executes when class is first loaded
     static {
         // Create two elevators for the building
-        for (int i = 1; i <= 10; i++) {
+        for (int i = 1; i <= 2; i++) {
             // Create elevator with all required components
             Elevator elevator = new Elevator(
                     i,                          // Elevator ID (1, 2)

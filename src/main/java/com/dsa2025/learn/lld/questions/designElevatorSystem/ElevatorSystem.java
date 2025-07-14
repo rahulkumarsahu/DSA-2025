@@ -10,10 +10,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * The Main class to demonstrate an elevator system with different dispatching algorithms
+ * The ElevatorSystem class to demonstrate an elevator system with different dispatching algorithms
  * Shows how different algorithms work in practice
  */
-public class Main {
+public class ElevatorSystem {
 
     public static void main(String[] args) {
         // Initialize building with floors 0-10
