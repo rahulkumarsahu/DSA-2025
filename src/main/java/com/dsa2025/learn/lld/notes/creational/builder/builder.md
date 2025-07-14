@@ -48,47 +48,41 @@ Builder Design Pattern
 ✅ Applicability
 Use the Builder pattern when:
 
+## Builder Design Pattern
 
-You want to avoid telescoping constructors with many optional parameters.
+### Overview
+The **Builder pattern** separates the construction of a complex object from its
+representation, allowing you to build objects step-by-step and produce different
+variants without cluttering client code with telescoping constructors.
 
-You need to create different representations of a product using the same construction process.
+---
 
-You are building composite trees or complex objects step-by-step.
+### Applicability
+| Use It When | Why It Helps |
+|-------------|--------------|
+| You’re **overloaded with constructors** or many optional parameters. | Replaces unwieldy telescoping constructors with a fluent, readable API. |
+| You must create **multiple representations** of the same product. | The same build sequence can yield different variants via concrete builders. |
+| You construct **composite trees** or other objects incrementally. | Provides fine-grained control over each construction step. |
 
+---
 
-Creating such overloaded constructors becomes unmanageable. The Builder pattern provides a clean alternative.
+### Implementation Steps
+1. **List** every step required to build the full product.
+2. **Define** a `Builder` interface that declares these steps.
+3. **Implement** concrete builders for each product variant.
+4. **Expose** a method (e.g., `Build()` or `GetResult()`) to return the final product.
+    * If return types differ, keep this method in each concrete builder.
+5. **(Optional)** Create a `Director` to enforce a specific build order and re-use it across clients.
 
-🛠️ How to Implement
-Identify the steps to construct all versions of the product.
+---
 
-Define a base Builder interface declaring these steps.
-
-Create concrete builders that implement the interface for specific product variants.
-
-Add a method to retrieve the result after construction.
-
-If the result type varies, this method should be in the concrete builder, not the interface.
-
-Optionally, create a Director class to control the construction sequence.
-
-🧭 Structure
-Client --> Director --> Builder Interface --> Concrete Builders --> Product
-Director: Defines the order of building steps.
-
-Builder Interface: Declares all build steps.
-
-Concrete Builder: Implements steps for a specific product.
-
-Product: The final constructed object.
-
-🎯 Benefits
-Construct objects step-by-step with full control.
-
-Defer or customize steps without breaking the end result.
-
-Reuse logic for constructing different product variants.
-
-Follows Single Responsibility Principle by separating construction logic from product logic.
-
-⚠️ Trade-offs
-Increases overall complexity due to multiple additional classes (builders, director, product variations).
+### Structure
+```mermaid
+graph LR
+    Client -->|controls or delegates| Director
+    Director -->|calls| BuilderInterface
+    BuilderInterface --> ConcreteBuilderA & ConcreteBuilderB
+    ConcreteBuilderA --> ProductA
+    ConcreteBuilderB --> ProductB
+    style ProductA fill:#f2f2f2,stroke:#999
+    style ProductB fill:#f2f2f2,stroke:#999
