@@ -48,6 +48,7 @@ public class Board {
         }
     }
 
+    // Strategy design pattern also
     public boolean hasWinner(PlayingPieceEnum pieceType) {
         return checkRows(pieceType) || checkColumns(pieceType) || checkDiagonals(pieceType);
     }
