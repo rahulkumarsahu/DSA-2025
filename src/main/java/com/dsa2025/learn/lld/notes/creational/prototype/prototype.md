@@ -1,9 +1,9 @@
-## Prototype Method Design Pattern
+## Prototype Design Pattern
 
 UML diagram of Prototype
 
 ![Schema UML diagram of prototype design pattern](prototype-1.png)
-![Design of Navigation App using prototype design pattern](prototype-2.png)
+![Design of App using prototype design pattern](prototype-2.png)
 
 # Prototype Pattern – README
 

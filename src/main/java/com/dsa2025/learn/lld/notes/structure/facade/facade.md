@@ -3,7 +3,7 @@
 UML diagram of facade
 
 ![Schema UML diagram of facade design pattern](facade-1.png)
-![Design of Navigation App using facade design pattern](facade-2.png)
+![Design of App using facade design pattern](facade-2.png)
 
 ## Facade Design Pattern
 

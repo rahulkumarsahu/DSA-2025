@@ -3,7 +3,7 @@
 UML diagram of observer
 
 ![Schema UML diagram of observer design pattern](Observer-1.png)
-![Design of Navigation App using observer design pattern](Observer-2.png)
+![Design of App using observer design pattern](Observer-2.png)
 
 
 # 🧩 Observer Pattern

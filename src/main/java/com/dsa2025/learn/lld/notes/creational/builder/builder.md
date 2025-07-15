@@ -2,8 +2,8 @@
 
 UML diagram of builder
 
-![Schema UML diagram of adapter design pattern](builder-1.png)
-![Design of Navigation App using builder design pattern](builder-2.png)
+![Schema UML diagram of builder design pattern](builder-1.png)
+![Design of App using builder design pattern](builder-2.png)
 
 # 🏗️ Builder Pattern
 

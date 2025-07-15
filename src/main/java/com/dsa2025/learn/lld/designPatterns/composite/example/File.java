@@ -1,14 +1,23 @@
 package com.dsa2025.learn.lld.designPatterns.composite.example;
 
-public class File implements FileSystemComponent {
+public class File extends FileSystemComponent {
 
-    private String name;
+    private final int size;
 
-    public File(String name) {
-        this.name = name;
+    public File(String name, int size) {
+        super(name);
+        this.size = size;
     }
 
-    public void showDetails() {
-        System.out.println("File: " + name);
+    @Override
+    public void display(int depth) {
+        String indent = "  ".repeat(depth);
+        System.out.println(indent + "- " + name + " (" + size + " KB)");
     }
+
+    @Override
+    public int getSize() {
+        return size;
+    }
+
 }

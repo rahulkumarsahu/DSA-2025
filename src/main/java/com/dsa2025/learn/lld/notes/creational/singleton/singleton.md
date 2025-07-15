@@ -1,4 +1,4 @@
-## Singleton Method Design Pattern
+## Singleton Design Pattern
 
 UML diagram of Singleton
 

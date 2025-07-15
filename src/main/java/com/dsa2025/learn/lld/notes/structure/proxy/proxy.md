@@ -3,7 +3,7 @@
 UML diagram of proxy
 
 ![Schema UML diagram of proxy design pattern](proxy-1.png)
-![Design of Navigation App using proxy design pattern](proxy-2.png)
+![Design of App using proxy design pattern](proxy-2.png)
 
 # 🛡️ Proxy Pattern
 

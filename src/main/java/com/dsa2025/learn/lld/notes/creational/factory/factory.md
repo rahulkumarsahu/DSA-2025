@@ -1,9 +1,9 @@
-## Factory Method Design Pattern
+## Factory Design Pattern
 
 UML diagram of Factory
 
-![Schema UML diagram of adapter design pattern](factory-1.png)
-![Design of Navigation App using builder design pattern](factory-2.png)
+![Schema UML diagram of factory design pattern](factory-1.png)
+![Design of App using factory design pattern](factory-2.png)
 
 
 ### Overview

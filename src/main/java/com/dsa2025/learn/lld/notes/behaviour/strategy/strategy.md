@@ -3,7 +3,7 @@
 UML diagram of strategy
 
 ![Schema UML diagram of strategy design pattern](Strategy-1.png)
-![Design of Navigation App using strategy design pattern](Strategy-2.png)
+![Design of App using strategy design pattern](Strategy-2.png)
 
 ## 📌 Strategy Design Pattern: Applicability
 

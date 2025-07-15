@@ -1,9 +1,9 @@
-## Abstract Factory Method Design Pattern
+## Abstract Factory Design Pattern
 
 UML diagram of Abstract Factory
 
 ![Schema UML diagram of Abstract Factory design pattern](abstractFactory-1.png)
-![Design of Navigation App using Abstract Factory design pattern](abstractFactory-2.png)
+![Design of App using Abstract Factory design pattern](abstractFactory-2.png)
 
 # Abstract Factory Pattern – README
 

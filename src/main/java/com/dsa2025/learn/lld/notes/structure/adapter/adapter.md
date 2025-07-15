@@ -1,9 +1,9 @@
-# Decorator Design Pattern
+# Adapter Design Pattern
 
-UML diagram of decorator
+UML diagram of Adapter
 
-![Schema UML diagram of adapter design pattern](adapter-1.png)
-![Design of Navigation App using adapter design pattern](adapter-2.png)
+![Schema UML diagram of Adapter design pattern](adapter-1.png)
+![Design of App using Adapter design pattern](adapter-2.png)
 
 # 🔄 Adapter Pattern
 
