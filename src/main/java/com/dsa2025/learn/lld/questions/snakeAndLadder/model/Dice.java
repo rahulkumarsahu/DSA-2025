@@ -1,4 +1,4 @@
-package com.dsa2025.learn.lld.questions.snakeAndLadder;
+package com.dsa2025.learn.lld.questions.snakeAndLadder.model;
 
 import java.util.Random;
 

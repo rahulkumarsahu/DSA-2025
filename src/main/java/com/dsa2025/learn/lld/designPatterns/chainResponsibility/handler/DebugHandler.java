@@ -1,4 +1,6 @@
-package com.dsa2025.learn.lld.designPatterns.chainResponsibility;
+package com.dsa2025.learn.lld.designPatterns.chainResponsibility.handler;
+
+import com.dsa2025.learn.lld.designPatterns.chainResponsibility.model.LogLevel;
 
 public class DebugHandler extends LogHandler {
 

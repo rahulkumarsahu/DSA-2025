@@ -1,4 +1,8 @@
-package com.dsa2025.learn.lld.questions.snakeAndLadder;
+package com.dsa2025.learn.lld.questions.snakeAndLadder.game;
+
+import com.dsa2025.learn.lld.questions.snakeAndLadder.model.Board;
+import com.dsa2025.learn.lld.questions.snakeAndLadder.model.Dice;
+import com.dsa2025.learn.lld.questions.snakeAndLadder.model.Player;
 
 import java.util.*;
 
@@ -78,7 +82,7 @@ public class Game {
     }
 
     private void displayGameStatus() {
-        System.out.println("\n📊 Current Game Status:");
+        System.out.println("\n📊 Current Game VehicleStatus:");
         for (Player player : allPlayers) {
             System.out.println("   " + player);
         }

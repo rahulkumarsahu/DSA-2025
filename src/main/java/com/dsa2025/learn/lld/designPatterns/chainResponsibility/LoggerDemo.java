@@ -1,5 +1,7 @@
 package com.dsa2025.learn.lld.designPatterns.chainResponsibility;
 
+import com.dsa2025.learn.lld.designPatterns.chainResponsibility.logger.Logger;
+
 public class LoggerDemo {
 
     public static void main(String[] args) {
