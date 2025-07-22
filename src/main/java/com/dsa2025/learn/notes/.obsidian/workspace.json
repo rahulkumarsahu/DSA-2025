@@ -4,21 +4,21 @@
     "type": "split",
     "children": [
       {
-        "id": "20a84ab05dd30a10",
+        "id": "b2bb36ddd89fd530",
         "type": "tabs",
         "children": [
           {
-            "id": "6e1945c1bd70ce03",
+            "id": "a34cf4b4e0120cb0",
             "type": "leaf",
             "state": {
               "type": "markdown",
               "state": {
-                "file": "concurrency/Thread Local.md",
+                "file": "SQL VS NOSQL/SQL/SQL.md",
                 "mode": "source",
                 "source": false
               },
               "icon": "lucide-file",
-              "title": "Thread Local"
+              "title": "SQL"
             }
           }
         ]
@@ -163,26 +163,31 @@
       "command-palette:Open command palette": false
     }
   },
-  "active": "6e1945c1bd70ce03",
+  "active": "a34cf4b4e0120cb0",
   "lastOpenFiles": [
+    "SQL VS NOSQL/after-1nf.png",
+    "SQL VS NOSQL/Untitled.md",
+    "2025-07-22.md",
     "Untitled.canvas",
+    "SQL VS NOSQL/SQL/SQL.md",
+    "SQL VS NOSQL/relation-2nf.png",
+    "SQL VS NOSQL/after-2NF.png",
+    "SQL VS NOSQL/NOSQL",
+    "SQL VS NOSQL/before-2NF.png",
+    "before2-NF.png",
+    "System Design.md",
+    "concurrency/Pasted image 20250616184953.png",
+    "Java/Variables.md",
+    "Java/Pasted image 20250506195555.png",
+    "Java/DECLARATION & Access Modifiers.md",
+    "SQL VS NOSQL/before-1nf.png",
+    "SQL VS NOSQL/SQL",
+    "SQL VS NOSQL",
     "2025-06-16.md",
     "concurrency/Thread Local.md",
-    "System Design.md",
-    "Java/Pasted image 20250506195555.png",
     "concurrency/Pasted image 20250616190016.png",
-    "concurrency/Pasted image 20250616185810.png",
-    "concurrency/Pasted image 20250616185742.png",
-    "concurrency/Pasted image 20250616185254.png",
-    "concurrency/Pasted image 20250616185228.png",
-    "concurrency/Pasted image 20250616185153.png",
-    "concurrency/Pasted image 20250616185111.png",
-    "concurrency/Pasted image 20250616185033.png",
-    "concurrency/Pasted image 20250616184953.png",
-    "Java/DECLARATION & Access Modifiers.md",
     "concurrency",
     "Java/Operator.md",
-    "Java/Variables.md",
     "Java"
   ]
 }
