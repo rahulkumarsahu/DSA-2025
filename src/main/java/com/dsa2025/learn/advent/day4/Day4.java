@@ -8,7 +8,7 @@ import java.util.List;
 
 public class Day4 {
 
-    private static int[][] DIRECTIONS = {
+    private static final int[][] DIRECTIONS = {
             {-1, -1}, {-1, 0}, {-1, 1},
             {0, -1},           {0, 1},
             {1, -1},  {1, 0},  {1, 1}

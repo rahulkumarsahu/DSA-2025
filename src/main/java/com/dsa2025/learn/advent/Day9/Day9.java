@@ -1,29 +1,58 @@
 package com.dsa2025.learn.advent.Day9;
 
-import java.io.BufferedReader;
-import java.io.FileReader;
-import java.io.IOException;
+import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Scanner;
 
 public class Day9 {
 
-    public static void main(String[] args) {
-        List<String> lines = new ArrayList<>();
+    static class Point {
+        int x;
+        int y;
 
-        try (BufferedReader br = new BufferedReader(new FileReader("/Users/rahulkumar/Documents/Learning/DSA-2025/inputs/input_day_8.txt"))) {
-            String line;
-            while ((line = br.readLine()) != null) {
-                line = line.trim();
-                if (!line.isEmpty()) {
-                    lines.add(line);
-                }
+        public Point(int x, int y) {
+            this.x = x;
+            this.y = y;
+        }
+    }
+
+    public static void main(String[] args) {
+        List<Point> redTiles = new ArrayList<>();
+
+        try {
+            File myFile = new File("/Users/rahulkumar/Documents/Learning/DSA-2025/inputs/input_day_9.txt");
+            Scanner fileReader = new Scanner(myFile);
+
+            while (fileReader.hasNextLine()) {
+                String line = fileReader.nextLine();
+                String[] parts = line.split(",");
+                int x = Integer.parseInt(parts[0].trim());
+                int y = Integer.parseInt(parts[1].trim());
+                redTiles.add(new Point(x, y));
             }
-        } catch (IOException e) {
-            throw new RuntimeException(e);
+            fileReader.close();
+        } catch (FileNotFoundException e) {
         }
 
-        String[] inputs = lines.toArray(new String[0]);
+        long maxArea = 0;
+
+        for (int i = 0; i < redTiles.size(); i++) {
+            Point p1 = redTiles.get(i);
+
+            for (Point p2 : redTiles) {
+                long width = Math.abs(p1.x - p2.x) + 1;
+                long height = Math.abs(p1.y - p2.y) + 1;
+
+                long currentArea = width * height;
+
+                if (currentArea > maxArea) {
+                    maxArea = currentArea;
+                }
+            }
+        }
+
+        System.out.println(maxArea);
 
     }
 }

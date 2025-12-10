@@ -83,14 +83,10 @@ public class Day8Part1 {
             int id1 = c.p1.groupID;
             int id2 = c.p2.groupID;
 
-            // If they are already in the same group, electricity already flows; do nothing.
             if (id1 == id2) {
                 continue;
             }
 
-            // If they are different, MERGE them.
-            // We change everyone who has id2 to have id1 instead.
-            // This is the "brute force" way to merge groups.
             for (Point p : points) {
                 if (p.groupID == id2) {
                     p.groupID = id1;

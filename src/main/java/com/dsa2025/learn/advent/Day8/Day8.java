@@ -76,7 +76,8 @@ public class Day8 {
             }
         }
 
-        Collections.sort(all);
+        Collections.sort(all); // n * log(n)
+        // 1000 * log(n)
 
 
         int groups = n;
@@ -101,10 +102,8 @@ public class Day8 {
                     p.groupID = id1;
                 }
             }
-
             groups--;
         }
-        assert lastA != null;
         long product = (long) lastA.x * (long) lastB.x;
         System.out.println("Product: " + product);
     }
