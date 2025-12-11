@@ -1,10 +1,11 @@
 package com.dsa2025.learn.advent.Day11;
 
-import java.io.*;
+import java.io.File;
+import java.io.FileNotFoundException;
 import java.util.*;
 
-public class Day11 {
-    ///Users/rahulkumar/Documents/Learning/DSA-2025/inputs/input_day_11.txt"
+public class Day11_2 {
+
     static Map<String, List<String>> network = new HashMap<>();
 
     static Map<String, Long> memo = new HashMap<>();
@@ -29,35 +30,38 @@ public class Day11 {
             }
             scanner.close();
 
-            long totalPaths = countPaths("you");
-            System.out.println("Total distinct paths: " + totalPaths);
+            long result = countPaths("svr", false, false);
+
+            System.out.println("Total valid paths: " + result);
 
         } catch (FileNotFoundException e) {
-            e.printStackTrace();
+            System.err.println("Error: 'input.txt' not found.");
         }
     }
 
-    static long countPaths(String current) {
-        if (memo.containsKey(current)) {
-            return memo.get(current);
-        }
+    static long countPaths(String current, boolean seenDAC, boolean seenFFT) {
+        if (current.equals("dac")) seenDAC = true;
+        if (current.equals("fft")) seenFFT = true;
 
         if (current.equals("out")) {
-            return 1;
+            return (seenDAC && seenFFT) ? 1 : 0;
+        }
+
+        String key = current + "|" + seenDAC + "|" + seenFFT;
+        if (memo.containsKey(key)) {
+            return memo.get(key);
         }
 
         if (!network.containsKey(current)) {
             return 0;
         }
 
-        long sum = 0;
-        for (String nextDevice : network.get(current)) {
-            sum += countPaths(nextDevice);
+        long totalPaths = 0;
+        for (String neighbor : network.get(current)) {
+            totalPaths += countPaths(neighbor, seenDAC, seenFFT);
         }
 
-        memo.put(current, sum);
-
-        return sum;
+        memo.put(key, totalPaths);
+        return totalPaths;
     }
-
 }
